@@ -23,3 +23,24 @@ def load_and_merge(file_paths: List[str], join_column: str) -> pd.DataFrame:
         df = pd.read_csv(path)
         result = pd.merge(result, df, on=join_column, how='left')
     return result
+
+
+def clean(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Clean the merged dataframe by dropping rows with NaN values in target column.
+    
+    
+    Parameters:
+    -----------
+    df : pd.DataFrame
+        Merged dataframe
+    
+    Returns:
+    --------
+    pd.DataFrame
+        Cleaned dataframe
+    """
+    df = df.dropna(subset=['Salary'])
+
+    
+    return df.dropna(subset=['id'])
