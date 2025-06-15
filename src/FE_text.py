@@ -4,6 +4,10 @@ from openai import OpenAI
 import json
 from dotenv import load_dotenv
 import os
+import logging
+
+# Suppress HTTP status code from console output.
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 # Load environment variables from .env file
 load_dotenv()
@@ -32,7 +36,7 @@ def get_pos_tags(text):
 
 
 # Function to extract missing values from description using OpenAI's GPT model.
-# Model chose is gpt-4o-mini, which is optimized for cost and speed, with $0.15 per MIT and $0.60 per MOT.
+# Chosen model is gpt-4o-mini, which is optimized for cost and speed, with $0.15 per MIT and $0.60 per MOT.
 
 def extract_data_llm(row):
     
@@ -135,7 +139,7 @@ def extract_data_llm(row):
         print(f"Error processing row {row.name}: {e}")
         return row
     
-# Function fill the missing data with the LLM output.
+# Function to fill the missing data with the LLM output.
 def fill_missing_data(df):
     
     """
@@ -163,4 +167,195 @@ def fill_missing_data(df):
     return df_updated
 
 
+# Function to explode job title into: seniority, area, role. Missing values are fetched from description using OpenAI's GPT model.
+# Chosen model is gpt-4o-mini, which is optimized for cost and speed, with $0.15 per MIT and $0.60 per MOT.
+
+def extract_job_title_info(row):
+    """Extract seniority, area, and role from job title"""
+    
+    
+    job_title = row['Job Title']
+    
+    if pd.isna(job_title):
+        return row
+    
+    years_exp = row.get('Years of Experience', None)
+    
+    prompt = f"""Extract the following information from this job title. Return ONLY a JSON object.
+
+    JOB TITLE: {job_title}
+    YEARS OF EXPERIENCE: {years_exp}
+
+    CRITICAL INSTRUCTIONS:
+    - Return raw JSON only, no ```json``` blocks
+    - If information is NOT FOUND, return null for that field
+    - Do NOT guess or make up information
+    - Only extract information that is explicitly stated
+    
+    SENIORITY RULES:
+    - If the job title contains a seniority level (e.g., "Senior", "Junior", "Lead", "Principal", etc), extract it
+    - If no seniority level is present, return "rule_based" (I will handle this programmatically)
+        
+    AREA RULES:
+    - If the job title contains a specific area (e.g., "Software Engineering", "Data Science", "Marketing", etc), extract it
+    - Try to group similar areas together (e.g., "Software Engineering" and "Software Development" as "Software/IT")
+    - Avoid being too specific, use broader categories when possible (e.g., "Consulting" instead of "Management Consulting")
+    - Data analysts and data scientists should be grouped under "Data Science"
+
+    Example inputs:
+    - "CEO" -> {{"seniority": "C-level", "area": "Executive", "role": "CEO"}}
+    - "Recruiter" -> {{"seniority": "rule_based", "area": "Human Resources", "role": "Recruiter"}}
+    - "Senior Consultant" -> {{"seniority": "Senior", "area": "Consulting", "role": "Consultant"}}
+    - "Data Scientist" -> {{"seniority": "rule_based", "area": "Data Science", "role": "Scientist"}}
+    - "Software Engineer" -> {{"seniority": "rule_based", "area": "Software/IT", "role": "Engineer"}}
+    - "Junior Business Development Associate" -> {{"seniority": "Junior", "area": "Business Development", "role": "Associate"}}
+    - "Senior IT Project Manager" -> {{"seniority": "Senior", "area": "Software/IT", "role": "Project Manager"}}
+    - "Director of Warehouse and Distribution" -> {{"seniority": "Director", "area": "Operations", "role": "Director"}}
+    
+    EXAMPLE OUTPUTS:
+    {{"seniority": "Senior", "area": "Software/IT", "role": "Engineer"}}
+    {{"seniority": "rule_based", "area": "Data Science", "role": "Scientist"}}
+    {{"seniority": "rule_based", "area": "Marketing", "role": "Manager"}}
+
+    JSON:"""
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini", 
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=100,
+            temperature=0
+        )
+        
+        # Get the response content
+        response_text = response.choices[0].message.content.strip()
+        
+        # Clean up markdown formatting if present
+        if response_text.startswith('```json'):
+            response_text = response_text.replace('```json', '').replace('```', '').strip()
+        elif response_text.startswith('```'):
+            response_text = response_text.replace('```', '').strip()
+        
+        # Parse JSON response
+        result = json.loads(response_text)
+        
+        # Handle rule-based seniority determination
+        if result.get('seniority') == 'rule_based':
+            if pd.notna(years_exp):
+                if years_exp >= 5:
+                    result['seniority'] = 'Senior'
+                elif years_exp >= 0 and years_exp <= 4:
+                    result['seniority'] = 'Junior'
+                else:
+                    result['seniority'] = None
+            else:
+                result['seniority'] = None
+        
+        # Update row with extracted values
+        updated_row = row.copy()
+        updated_row['Seniority'] = result.get('seniority', None)
+        updated_row['Area'] = result.get('area', None)
+        updated_row['Role'] = result.get('role', None)
+        
+        return updated_row
+        
+    except (json.JSONDecodeError, KeyError) as e:
+        print(f"JSON parsing error for row {row.name}: {e}")
+        print(f"Raw response: {response.choices[0].message.content}")
+        return row
+    except Exception as e:
+        print(f"Error processing row {row.name}: {e}")
+        return row
+ 
+ 
+# Standardize Areas & Roles obtained through the LLM, to reduce noise in the dataset.
+def aggregate_categories(value, category_type):
+    """Aggregate areas and roles into broader categories"""
+    
+    if pd.isna(value) or value == 'rule_based':
+        return 'Other'
+    
+    if category_type == 'area':
+        mapping = {
+            'Software/data': ['Software/IT', 'Data Science', 'Engineering', 'Web Design', 'Technical Writing'],
+          
+            'Business': ['Business Analysis', 'Business Development', 'Business Operations', 
+                        'Consulting', 'Executive'],
+            
+            'Sales & Marketing': ['Marketing', 'Sales', 'Sales/Marketing', 'Public Relations', 
+                                'Content Production', 'Creative'],
+
+            'Finance & Operations': ['Finance', 'Accounting', 'Operations', 'Supply Chain'],
+            
+            'Product & Design': ['Product Management', 'Product Development', 'Design', 
+                            'User Experience'],
+
+            'People & Support': ['Human Resources', 'Training', 'Customer Service', 
+                            'Customer Success', 'Customer Support', 'Account Management'],
+
+            'Management': ['Project Management', 'Administration', 'Events'],
+
+            'Other': ['Research', 'Data Entry']
+        }
+    
+    elif category_type == 'role':
+        mapping = {
+            'Leadership': ['Director', 'VP', 'Executive', 'CEO', 'Officer', 'Technology Officer'],
+            
+            'Management': ['Manager', 'Operations Manager', 'Product Manager', 'Project Manager', 
+                          'Account Manager', 'Product Marketing Manager', 'Product Management', 'Architect'],
+            
+            'Analysis': ['Analyst', 'Business Analyst', 'Data Scientist', 'Scientist', 'Researcher', 
+                        'Quality Assurance Analyst'],
+            
+            'Engineer': ['Engineer', 'Developer', 'Engineering'],
+            
+            'Support': ['Coordinator', 'Specialist', 'Support Specialist', 'Assistant', 'Support', 
+                       'Clerk', 'HR'],
+            
+            'Individual Contributor': ['Associate', 'Representative', 'Rep', 'Generalist', 'Recruiter', 
+                                      'Accountant', 'Consultant', 'Advisor', 'Account Executive'],
+            
+            'Creative': ['Designer', 'Product Designer', 'Graphic Designer', 'Copywriter', 'Writer', 
+                        'Producer'],
+            
+            'Sales/Marketing': ['Marketing', 'Sales']
+        }
+    
+    else:
+        raise ValueError("category_type must be 'area' or 'role'")
+    
+    # Find matching category
+    for category, items in mapping.items():
+        if value in items:
+            return category
+    
+    return 'Other'   
+    
+    
+# Function to apply the job title extraction function to the DataFrame.
+def apply_job_title_extraction(df):
+    
+    """Apply job title extraction to entire dataframe"""
+
+    # Initialize new columns if they don't exist
+    for col in ['Seniority', 'Area', 'Role']:
+        if col not in df.columns:
+            df[col] = None
+
+    # Apply extraction
+    for idx in df.index:
+        if idx % 50 == 0:
+            print(f"Processing row {idx}...")
+        df.loc[idx] = extract_job_title_info(df.loc[idx])
+    
+    # Aggregate areas and roles into broader categories
+    df['Area'] = df['Area'].apply(lambda x: aggregate_categories(x, 'area'))
+    df['Role'] = df['Role'].apply(lambda x: aggregate_categories(x, 'role'))
+    
+
+    return df
+
+
+    
     

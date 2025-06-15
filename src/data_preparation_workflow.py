@@ -18,6 +18,7 @@ paths = ['../data/people.csv',
 # Fill other NaN
 # FE_ratios
 
+# VER FUNCTION COMPOSITION.
 
 def main():
     """
@@ -48,6 +49,12 @@ def main():
                         Starting filling missing data with description info...")        
         df = fill_missing_data(df)
         
+        logger.info("Starting Job Title feature engineering...\n")
+        
+        df = apply_job_title_extraction(df)
+        
+        #logger.info("Job Title feature engineering completed successfully!\n")
+        
         logger.info("Text feature engineering completed successfully!\n")
         logger.info(f"Dataset shape after text FE: {df.shape} \n")
         
@@ -55,6 +62,10 @@ def main():
         logger.info("Removing rows with null values...\n")
         df = remove_nulls(df)
         logger.info(f"Shape after removing nulls: {df.shape} \n")
+        
+        # Drop unnecessary columns
+        logger.info("Dropping unnecessary columns: id, Job title and Description...\n")
+        df.drop(columns=['id','Job title', 'Description'], inplace=True)
         
         # Save the final DataFrame to a CSV file
         output_path = '../data/cleaned_data/final_dataset.csv'
