@@ -1,5 +1,7 @@
 import logging
 from load_and_merge import *
+from FE_text import *
+from utils import remove_nulls
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -10,22 +12,54 @@ paths = ['../data/people.csv',
          '../data/descriptions.csv']
 
 
+# load_and_merge
+# clean
+# FE_text
+# Fill other NaN
+# FE_ratios
+
+
 def main():
     """
     Main function to load and merge CSV files and print the result.
     """
     try:
-        logger.info("Starting data loading and merging process...")
+        # Load data
+        logger.info("Starting data loading and merging process... \n")
         logger.info(f"Files to merge: {paths}")
         
-        merged_df = load_and_merge(paths, "id")
+        df = load_and_merge(paths, "id")
         
-        logger.info("Merge completed successfully!")
-        logger.info(f"Final dataset shape: {merged_df.shape}")
-        logger.info(f"Columns: {list(merged_df.columns)}")
+        logger.info("Merge completed successfully!\n")
+        logger.info(f"Final dataset shape: {df.shape}")
+        logger.info(f"Columns: {list(df.columns)}")
         
-        logger.info("First 5 rows of merged data:")
-        logger.info(f"\n{merged_df.head(5)}")
+        # Delete rows with Salary NaN
+        df = clean(df)
+        logger.info("Data cleaning completed successfully!\n")
+        logger.info(f"Cleaned dataset shape: {df.shape}")
+        
+        # Feature engineering on text data
+        logger.info("Starting text feature engineering...\n\
+                        Adding Part of speech features..")
+        df[['noun_count', 'verb_count', 'adj_count', 'adv_count']] = df['Description'].apply(get_pos_tags)
+        
+        logger.info("Part of speech features added successfully!\n\
+                        Starting filling missing data with description info...")        
+        df = fill_missing_data(df)
+        
+        logger.info("Text feature engineering completed successfully!\n")
+        logger.info(f"Dataset shape after text FE: {df.shape} \n")
+        
+        # delete rows with nulls mvp 1.0.1
+        logger.info("Removing rows with null values...\n")
+        df = remove_nulls(df)
+        logger.info(f"Shape after removing nulls: {df.shape} \n")
+        
+        # Save the final DataFrame to a CSV file
+        output_path = '../data/cleaned_data/final_dataset.csv'
+        df.to_csv(output_path, index=False)
+        logger.info(f"Final dataset saved to {output_path}")
         
     except Exception as e:
         logger.error(f"Error occurred: {e}")
