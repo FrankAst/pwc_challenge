@@ -2,6 +2,8 @@
 test_in_nb.ipynb
 
 src/__pycache__/load_and_merge.cpython-310.pyc
+src/__pycache__/
+
 
 *.ipynb_checkpoints
 *.egg-info/
