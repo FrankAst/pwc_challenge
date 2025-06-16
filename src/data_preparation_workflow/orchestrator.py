@@ -1,15 +1,16 @@
 import logging
-from load_and_merge import *
-from FE_text import *
-from utils import remove_nulls
+from .load_and_merge import *
+from .FE_text import *
+from ..utils import remove_nulls
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-paths = ['../data/people.csv',
-         '../data/salary.csv',
-         '../data/descriptions.csv']
+# Paths from root since its a package.
+paths = ['data/people.csv',
+         'data/salary.csv',
+         'data/descriptions.csv']
 
 
 # load_and_merge
@@ -68,7 +69,7 @@ def main():
         df.drop(columns=['id','Job title', 'Description'], inplace=True)
         
         # Save the final DataFrame to a CSV file
-        output_path = '../data/cleaned_data/final_dataset.csv'
+        output_path = 'data/cleaned_data/final_dataset.csv'
         df.to_csv(output_path, index=False)
         logger.info(f"Final dataset saved to {output_path}")
         
