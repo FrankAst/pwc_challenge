@@ -250,10 +250,10 @@ class DecisionTree(BaseModel):
         if param_grid is None:
             param_grid = {
                 'regressor__max_depth': [3, 5, 10, None],
-                'regressor__min_samples_split': [2, 5, 10],
-                'regressor__min_samples_leaf': [1, 2, 4],
+                'regressor__min_samples_split': [2, 5, 10,20,30,40],
+                'regressor__min_samples_leaf': [1, 2, 4,10,15,20],
                 'regressor__max_features': ['sqrt', 'log2', None],
-                'regressor__ccp_alpha': [-0.5, -0.2, 0.0, 0.01, 0.05, 0.1, 0.2]
+                'regressor__ccp_alpha': [0.0, 0.01, 0.05, 0.1, 0.2,0.5,1,1.5]
             }
         
         pipeline = Pipeline([
