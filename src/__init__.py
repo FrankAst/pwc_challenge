@@ -5,7 +5,7 @@ This package provides tools for predicting salaries based on employee characteri
 including demographics, education, experience, and job descriptions.
 
 Usage:
-    from src import load_dataset, BaselineModel, RandomForestModel
+    from src import load_dataset, BaselineModel, DecisionTree, LinearModel
     from src import calculate_metrics, compare_models
     from src.config import CATEGORICAL_FEATURES, NUMERICAL_FEATURES, SEED, TEST_SIZE, FILE_PATH
 """
@@ -38,7 +38,7 @@ except ImportError:
     pass
 
 try:
-    from .models import RandomForestModel
+    from .models import DecisionTree
 except ImportError:
     pass
 
@@ -79,7 +79,7 @@ __all__ = [
     
     # Models
     "dummy_model",
-    "RandomForestModel",
+    "DecisionTree",
     "LinearModel",
     
     # Evaluation

@@ -122,6 +122,22 @@ class BaseModel(ABC):
         
         return info
     
+    def list_methods(self):
+        """
+        List all public methods available in this class.
+        
+        Returns:
+            List of public method names (excluding private methods that start with _)
+        """
+        methods = [method for method in dir(self) 
+                  if callable(getattr(self, method)) and not method.startswith('_')]
+        
+        print("Available public methods:")
+        for i, method in enumerate(methods, 1):
+            print(f"  {i}. {method}()")
+        
+        return methods
+    
     def plot_predictions(self, X, y, dataset_name='Dataset', figsize=(8, 6)):
         """
         Plot predictions vs actual values.
