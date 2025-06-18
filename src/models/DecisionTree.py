@@ -232,7 +232,7 @@ class DecisionTree(BaseModel):
         else:
             return scoring, cv_scores
     
-    def grid_search(self, X, y, param_grid=None, cv=5, scoring='neg_root_mean_squared_error', update_params=True):
+    def optimize(self, X, y, param_grid=None, cv=5, scoring='neg_root_mean_squared_error', update_params=True):
         """
         Perform grid search for hyperparameter tuning.
         

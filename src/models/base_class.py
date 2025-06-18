@@ -87,7 +87,7 @@ class BaseModel(ABC):
         # Call model-specific prediction (each model handles its own preprocessing)
         return self._predict_model(X)
     
-    def _bootstrap(self, X, y, alpha=0.05, n_bootstrap=100, sample_proportion=0.8):
+    def _bootstrap(self, X, y, alpha=0.05, n_bootstrap=500, sample_proportion=0.8):
         """
         Calculate bootstrap confidence intervals for metrics.
         

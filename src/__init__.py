@@ -47,6 +47,11 @@ try:
 except ImportError:
     pass
 
+try:
+    from .models import RandomForest
+except ImportError:
+    pass
+
 # Import evaluation tools
 try:
     from .evaluation import (
@@ -81,6 +86,7 @@ __all__ = [
     "dummy_model",
     "DecisionTree",
     "LinearModel",
+    "RandomForest"
     
     # Evaluation
     "calculate_metrics",
