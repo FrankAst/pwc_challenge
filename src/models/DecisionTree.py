@@ -6,6 +6,7 @@ from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import GridSearchCV, cross_val_score
 from sklearn.pipeline import Pipeline
+from src.config import SEED
 
 """
 Workflow:
@@ -37,9 +38,17 @@ class DecisionTree(BaseModel):
         self.preprocessor = None
         self.feature_names = None
         
+        # Used to create the preprocessing pipeline
+        self.numerical_cols = []
+        self.categorical_cols = []
+        self.ordinal_cols = list(self.ordinal_mappings.keys())
+        
+        
+        
+        
         # Set default parameters for decision tree
         default_params = {
-            'random_state': 42,
+            'random_state': SEED,
             'max_depth': None,
             'min_samples_split': 2,
             'min_samples_leaf': 1
@@ -66,14 +75,13 @@ class DecisionTree(BaseModel):
         Returns:
             Tuple of (ordinal_cols, categorical_cols, numerical_cols)
         """
-        ordinal_cols = [col for col in self.ordinal_mappings.keys() if col in X.columns]
-        categorical_cols = [col for col in X.select_dtypes(include=['object', 'category']).columns 
-                           if col not in ordinal_cols]
-        numerical_cols = X.select_dtypes(include=[np.number]).columns.tolist()
+        self.ordinal_cols = [col for col in self.ordinal_mappings.keys() if col in X.columns]
+        self.categorical_cols = [col for col in X.select_dtypes(include=['object', 'category']).columns 
+                           if col not in self.ordinal_cols]
+        self.numerical_cols = X.select_dtypes(include=[np.number]).columns.tolist()
         
-        return ordinal_cols, categorical_cols, numerical_cols
 
-    def _create_pipeline(self, X):
+    def _create_pipeline(self):
         """
         Create complete preprocessing pipeline with ordinal and one-hot encoding.
         
@@ -83,11 +91,11 @@ class DecisionTree(BaseModel):
         Returns:
             ColumnTransformer for complete preprocessing
         """
-        ordinal_cols, categorical_cols, numerical_cols = self._get_column_types(X)
+
         transformers = []
         
         # Add ordinal encoding transformers
-        for col in ordinal_cols:
+        for col in self.ordinal_cols:
             order = self.ordinal_mappings[col]
             ordinal_encoder = OrdinalEncoder(
                 categories=[order],
@@ -97,18 +105,18 @@ class DecisionTree(BaseModel):
             transformers.append((f'ord_{col}', ordinal_encoder, [col]))
         
         # Add numerical transformer (with or without scaling)
-        if numerical_cols:
+        if self.numerical_cols:
             if self.normalize:
-                transformers.append(('num', MinMaxScaler(), numerical_cols))
+                transformers.append(('num', MinMaxScaler(), self.numerical_cols))
             else:
-                transformers.append(('num', 'passthrough', numerical_cols))
+                transformers.append(('num', 'passthrough', self.numerical_cols))
         
         # Add categorical transformer (one-hot encoding for remaining categoricals)
-        if categorical_cols:
+        if self.categorical_cols:
             transformers.append((
                 'cat', 
                 OneHotEncoder(drop='first', sparse_output=False, handle_unknown='ignore'), 
-                categorical_cols
+                self.categorical_cols
             ))
         
         return ColumnTransformer(transformers=transformers, remainder='drop')
@@ -118,15 +126,16 @@ class DecisionTree(BaseModel):
         Fit decision tree model with complete preprocessing pipeline.
         """
         # Create and fit preprocessing pipeline
-        self.preprocessor = self._create_pipeline(X)
+        self._get_column_types(X)
+        self.preprocessor = self._create_pipeline()
         X_processed = self.preprocessor.fit_transform(X)
         
         # Log preprocessing info
-        ordinal_cols, categorical_cols, numerical_cols = self._get_column_types(X)
+        
         print(f"After preprocessing: {X_processed.shape[1]} features")
-        print(f"  - Ordinal encoded: {ordinal_cols}")
-        print(f"  - One-hot encoded: {categorical_cols}")
-        print(f"  - Numerical features: {len(numerical_cols)}")
+        print(f"  - Ordinal encoded: {self.ordinal_cols}")
+        print(f"  - One-hot encoded: {self.categorical_cols}")
+        print(f"  - Numerical features: {len(self.numerical_cols)}")
         if self.normalize:
             print("  - Features normalized")
         
@@ -171,10 +180,6 @@ class DecisionTree(BaseModel):
             'importance': self.model.feature_importances_
         }).sort_values('importance', ascending=False)
 
-    def _get_model_params_for_sklearn(self):
-        """Get model parameters suitable for sklearn components."""
-        return {k: v for k, v in self.model_params.items() 
-                if k not in ['normalize', 'ordinal_mappings']}
 
     def cross_validate(self, X, y, cv=5, scoring='neg_root_mean_squared_error'):
         """
@@ -190,8 +195,10 @@ class DecisionTree(BaseModel):
             Dictionary with CV results including mean and std of test scores
         """
         # Create pipeline with preprocessing and model
+        self._get_column_types(X)
+        
         pipeline = Pipeline([
-            ('preprocessor', self._create_pipeline(X)),
+            ('preprocessor', self._create_pipeline()),
             ('regressor', DecisionTreeRegressor(**self._get_model_params_for_sklearn()))
         ])
         
@@ -219,6 +226,15 @@ class DecisionTree(BaseModel):
         
         return results
     
+    
+    
+    
+    def _get_model_params_for_sklearn(self):
+        """Get model parameters suitable for sklearn components."""
+        return {k: v for k, v in self.model_params.items() 
+                if k not in ['normalize', 'ordinal_mappings']}
+    
+    
     def _process_cv_scores(self, scoring, cv_scores):
         """Process cross-validation scores based on scoring metric."""
         if scoring == 'neg_mean_squared_error':
@@ -231,6 +247,8 @@ class DecisionTree(BaseModel):
             return 'R²', cv_scores
         else:
             return scoring, cv_scores
+    
+    
     
     def optimize(self, X, y, param_grid=None, cv=5, scoring='neg_root_mean_squared_error', update_params=True):
         """
@@ -247,6 +265,10 @@ class DecisionTree(BaseModel):
         Returns:
             GridSearchCV object with results
         """
+        print("Starting gridsearch for hyperparameter tuning...\n")
+        
+        self._get_column_types(X)
+        
         if param_grid is None:
             param_grid = {
                 'regressor__max_depth': [3, 5, 10, None],
@@ -257,7 +279,7 @@ class DecisionTree(BaseModel):
             }
         
         pipeline = Pipeline([
-            ('preprocessor', self._create_pipeline(X)),
+            ('preprocessor', self._create_pipeline()),
             ('regressor', DecisionTreeRegressor(**self._get_model_params_for_sklearn()))
         ])
         

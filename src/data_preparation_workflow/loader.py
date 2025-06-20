@@ -2,7 +2,7 @@
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from ..config import CATEGORICAL_FEATURES, NUMERICAL_FEATURES, SEED,TARGET_COLUMN, FILE_PATH
+from src.config import CATEGORICAL_FEATURES, NUMERICAL_FEATURES, SEED,TARGET_COLUMN, FILE_PATH
 
 
 def load_dataset(file_path = None):

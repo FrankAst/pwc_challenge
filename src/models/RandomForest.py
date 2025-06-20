@@ -1,12 +1,9 @@
-from .base_class import BaseModel
 from .DecisionTree import DecisionTree
-import pandas as pd
-import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, OrdinalEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.model_selection import GridSearchCV, cross_val_score
+import optuna
+from sklearn.model_selection import  cross_val_score
 from sklearn.pipeline import Pipeline
+from src.config import SEED
 
 """
 Workflow:
@@ -39,7 +36,7 @@ class RandomForest(DecisionTree):
         # User overrides take precedence
         default_params.update(kwargs)
         
-        self.model = RandomForestRegressor()
+        self.model = RandomForestRegressor(random_state= SEED)
         
         # Store all parameters for reference
         self.model_params.update({
@@ -48,7 +45,7 @@ class RandomForest(DecisionTree):
         })   
 
 
-    def cross_validate(self, X, y, cv=5, scoring='neg_root_mean_squared_error'):
+    def cross_validate(self, X, y, cv=5, scoring='neg_root_mean_squared_error', return_ci = True):
         """
         Perform cross-validation on the decision tree model.
         
@@ -62,8 +59,10 @@ class RandomForest(DecisionTree):
             Dictionary with CV results including mean and std of test scores
         """
         # Create pipeline with preprocessing and model
+        self._get_column_types(X)
+        
         pipeline = Pipeline([
-            ('preprocessor', self._create_pipeline(X)),
+            ('preprocessor', self._create_pipeline()),
             ('regressor', RandomForestRegressor(**self._get_model_params_for_sklearn()))
         ])
         
@@ -89,13 +88,58 @@ class RandomForest(DecisionTree):
         print(f"  {score_name}: {results['mean_score']:.2f} (±{results['std_score']:.2f})")
         print(f"  Individual fold scores: {[f'{score:.2f}' for score in cv_scores]}")
         
-        return results
+        if return_ci:
+            return results
+        else:
+            return results['mean_score']
     
   
     
-    def optimize(self, X, y, param_grid=None, cv=5, scoring='neg_root_mean_squared_error', update_params=True):
+    def optimize(self, X, y, cv=5, trials = 50, scoring='neg_root_mean_squared_error'):
         
-        return 
+        self._get_column_types(X)
+        
+        def objective(trial):
+            n_estimators = trial.suggest_int('n_estimators', 50, 300)
+            max_depth = trial.suggest_int('max_depth', 2, 20)
+            min_samples_split = trial.suggest_int('min_samples_split', 2, 20)
+            min_samples_leaf = trial.suggest_int('min_samples_leaf', 1, 10)
+            max_features = trial.suggest_categorical('max_features', ['sqrt', 'log2'])
+           
+           
+            # Given the small amount of data, I will use CV to reduce parameters overfitting.
+        
+            pipeline = Pipeline([
+                ('preprocessor', self._create_pipeline()),
+                ('regressor', RandomForestRegressor(n_estimators= n_estimators,
+                                                    max_depth=max_depth,
+                                                    min_samples_split=min_samples_split,
+                                                    min_samples_leaf=min_samples_leaf,
+                                                    max_features=max_features,
+                                                    random_state=SEED))
+        ])
+            score = -cross_val_score(pipeline, X, y, cv=cv, scoring = scoring,n_jobs=-1).mean()
+
+            return score
+   
+        study = optuna.create_study()  # Create a new study.
+        study.optimize(objective, n_trials = trials)  # Invoke optimization of the objective function.
+    
+    
+        print(f"Best parameters: {study.best_params}")
+        print(f"Best score: {study.best_value:.2f}")
+    
+        # Update model parameters with the best found parameters 
+        self.model_params.update(study.best_params)
+        
+        # Create a new model instance with the best parameters
+        best_params_with_seed = study.best_params.copy()
+        best_params_with_seed['random_state'] = SEED
+        self.model = RandomForestRegressor(**best_params_with_seed)
+        
+        self.fit(X, y)  # Fit the model with the best parameters    
+        
+        return study
     
    
 
