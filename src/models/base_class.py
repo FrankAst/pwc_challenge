@@ -1,13 +1,14 @@
 """Base model class with common functionality."""
 
 from abc import ABC, abstractmethod
+from .APIwrapper_class import APIwrapper
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 
-class BaseModel(ABC):
+class BaseModel(ABC, APIwrapper):
     """Abstract base class for all models."""
     
     def __init__(self, **kwargs):
@@ -65,6 +66,13 @@ class BaseModel(ABC):
         Returns:
             self
         """
+        
+        # Metadata capture - For API information call.
+        self.feature_names_ = list(X.columns) if hasattr(X, 'columns') else None
+        if hasattr(y, 'name') and y.name:
+            self.target_name_ = y.name
+            
+            
         # Call model-specific fitting (each model handles its own preprocessing)
         self._fit_model(X, y)
         
