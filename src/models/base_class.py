@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 from .APIwrapper_class import APIwrapper
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -20,7 +21,8 @@ class BaseModel(ABC, APIwrapper):
         """
         self.is_fitted = False
         self.model_params = kwargs
-    
+        self.__init_api_attributes__()
+        
     @abstractmethod
     def _fit_model(self, X, y):
         """
@@ -227,7 +229,7 @@ class BaseModel(ABC, APIwrapper):
         for i, method in enumerate(methods, 1):
             print(f"  {i}. {method}()")
         
-        return methods
+    
     
     def plot_predictions(self, X, y, dataset_name='Dataset', figsize=(8, 6)):
         """
