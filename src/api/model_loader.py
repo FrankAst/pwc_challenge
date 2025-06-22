@@ -5,11 +5,10 @@ from typing import Dict, Any, List, Optional
 
 logger = logging.getLogger(__name__)
 
-# Add src to path so we can import your model classes
+# Add project root to path so we can import src.models.* 
 current_dir = Path(__file__).parent
 project_root = current_dir.parent.parent
-src_path = project_root / "src"
-sys.path.insert(0, str(src_path))
+sys.path.insert(0, str(project_root))  # Add project root, not src
 
 class ModelLoader:
     """
@@ -17,8 +16,16 @@ class ModelLoader:
     Much simpler since models are self-contained and API-compatible.
     """
     
-    def __init__(self, models_dir: str = "models"):
-        self.models_dir = Path(models_dir)
+    def __init__(self, models_dir: str = None):
+        # Calculate models directory relative to project root
+        current_dir = Path(__file__).parent
+        project_root = current_dir.parent.parent
+        
+        if models_dir is None:
+            self.models_dir = project_root / "models"  # Use absolute path to project's models dir
+        else:
+            self.models_dir = Path(models_dir)
+            
         self.loaded_models: Dict[str, Any] = {}
         self.model_info: Dict[str, Dict] = {}
         
@@ -76,7 +83,7 @@ class ModelLoader:
         """Load a single model file using the enhanced base class loader."""
         try:
             # Try to use the enhanced base class load method
-            from models.base_class import BaseModel
+            from src.models.base_class import BaseModel
             return BaseModel.load(file_path.name)  # Use filename only, load() handles path resolution
             
         except ImportError as e:
@@ -151,11 +158,11 @@ class ModelLoader:
 # Global model loader instance
 _model_loader = None
 
-def get_model_loader() -> EnhancedModelLoader:
+def get_model_loader() -> ModelLoader:
     """Get the global model loader instance."""
     global _model_loader
     if _model_loader is None:
-        _model_loader = EnhancedModelLoader()
+        _model_loader = ModelLoader()
         _model_loader.load_all_models()
     return _model_loader
 
@@ -169,7 +176,7 @@ def reload_models():
 
 # Example usage / testing
 if __name__ == "__main__":
-    # Test the enhanced model loader
+    # Test the model loader
     loader = ModelLoader()
     loader.load_all_models()
     

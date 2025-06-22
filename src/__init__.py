@@ -52,14 +52,6 @@ try:
 except ImportError:
     pass
 
-# Import evaluation tools
-try:
-    from .evaluation import (
-        calculate_metrics,
-        compare_models
-    )
-except ImportError:
-    pass
 
 # Import utilities
 try:
@@ -87,10 +79,6 @@ __all__ = [
     "DecisionTree",
     "LinearModel",
     "RandomForest"
-    
-    # Evaluation
-    "calculate_metrics",
-    "compare_models",
     
     # Utils
     "ExperimentTracker"
