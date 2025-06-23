@@ -198,6 +198,11 @@ class BaseModel(ABC, APIwrapper):
             })
         
         results_df = pd.DataFrame(results_data)
+        
+        # When return_ci=True, automatically update model_metrics_ 
+        if hasattr(self, 'set_model_metrics'):
+            self.set_model_metrics(results_df)
+        
         return results_df
     
     def get_model_info(self):

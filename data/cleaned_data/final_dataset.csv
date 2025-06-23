@@ -1,367 +1,367 @@
-Age,Gender,Education Level,Years of Experience,noun_count,verb_count,adj_count,adv_count,Seniority,Area,Role,Salary
-32.0,Male,Bachelor's,5.0,22,10,10,0,Senior,Software/data,Engineer,90000.0
-28.0,Female,Master's,3.0,24,13,7,3,Junior,Software/data,Analysis,65000.0
-45.0,Male,PhD,15.0,26,13,13,0,Senior,Other,Management,150000.0
-36.0,Female,Bachelor's,7.0,26,10,6,0,Senior,Sales & Marketing,Individual Contributor,60000.0
-52.0,Male,Master's,20.0,23,16,8,3,Senior,Other,Leadership,200000.0
-29.0,Male,Bachelor's,2.0,36,16,10,0,Junior,Sales & Marketing,Analysis,55000.0
-42.0,Female,Master's,12.0,25,14,12,1,Senior,Product & Design,Management,120000.0
-31.0,Male,Bachelor's,4.0,28,14,6,1,Junior,Sales & Marketing,Management,80000.0
-26.0,Female,Bachelor's,1.0,31,17,8,2,Junior,Sales & Marketing,Support,45000.0
-38.0,Male,PhD,10.0,23,10,7,0,Senior,Other,Analysis,110000.0
-29.0,Male,Master's,3.0,24,10,15,1,Junior,Software/data,Engineer,75000.0
-48.0,Female,Bachelor's,18.0,33,14,12,0,Senior,People & Support,Management,140000.0
-35.0,Male,Bachelor's,6.0,27,13,16,2,Senior,Finance & Operations,Analysis,65000.0
-40.0,Female,Master's,14.0,31,15,11,2,Senior,Management,Management,130000.0
-27.0,Male,Bachelor's,2.0,23,12,4,2,Junior,People & Support,Individual Contributor,40000.0
-44.0,Male,Bachelor's,16.0,27,15,12,0,Senior,Finance & Operations,Management,125000.0
-33.0,Female,Master's,7.0,31,17,10,2,Senior,Sales & Marketing,Management,90000.0
-39.0,Male,PhD,12.0,29,15,13,1,Senior,Other,Engineer,115000.0
-25.0,Female,Bachelor's,0.0,23,11,11,6,Junior,Other,Support,35000.0
-51.0,Male,Bachelor's,22.0,35,14,10,1,Senior,Sales & Marketing,Leadership,180000.0
-34.0,Female,Master's,5.0,26,17,6,2,Senior,Business,Analysis,80000.0
-47.0,Male,Master's,19.0,21,13,3,2,Senior,Finance & Operations,Leadership,190000.0
-30.0,Male,Bachelor's,2.0,29,21,10,3,Junior,Software/data,Support,50000.0
-36.0,Female,Bachelor's,9.0,29,19,9,0,Senior,People & Support,Individual Contributor,60000.0
-41.0,Male,Master's,13.0,28,14,14,1,Senior,Finance & Operations,Management,140000.0
-28.0,Female,Bachelor's,3.0,28,19,10,1,Junior,Sales & Marketing,Support,45000.0
-37.0,Female,Master's,11.0,34,12,9,2,Senior,Software/data,Management,110000.0
-24.0,Male,Bachelor's,1.0,20,11,5,1,Junior,Software/data,Engineer,40000.0
-43.0,Female,PhD,15.0,27,15,15,1,Senior,Business,Individual Contributor,140000.0
-33.0,Male,Master's,6.0,23,10,10,3,Senior,Product & Design,Creative,90000.0
-50.0,Male,Bachelor's,25.0,28,15,9,2,C-level,Business,Leadership,250000.0
-31.0,Female,Bachelor's,4.0,30,9,16,1,Junior,Finance & Operations,Individual Contributor,55000.0
-29.0,Male,Master's,3.0,38,17,11,1,Junior,Software/data,Analysis,75000.0
-39.0,Female,Bachelor's,10.0,31,11,11,1,Senior,Sales & Marketing,Support,65000.0
-46.0,Male,PhD,20.0,26,16,12,0,Senior,Other,Management,170000.0
-27.0,Male,Bachelor's,2.0,29,8,17,2,Junior,Software/data,Creative,45000.0
-35.0,Female,Bachelor's,7.0,36,12,11,0,Senior,People & Support,Individual Contributor,60000.0
-42.0,Male,Master's,14.0,27,14,10,5,Senior,Software/data,Engineer,115000.0
-26.0,Female,Bachelor's,1.0,28,17,10,1,Junior,People & Support,Individual Contributor,40000.0
-49.0,Male,Bachelor's,21.0,32,12,6,1,Senior,Sales & Marketing,Leadership,160000.0
-34.0,Female,Master's,5.0,32,13,11,1,Senior,Product & Design,Creative,80000.0
-48.0,Male,Master's,18.0,27,10,15,1,Senior,Finance & Operations,Leadership,190000.0
-30.0,Male,Bachelor's,3.0,34,11,11,1,Junior,Software/data,Engineer,60000.0
-36.0,Female,Bachelor's,8.0,27,16,14,1,Senior,Management,Support,45000.0
-41.0,Male,Master's,13.0,27,12,10,3,Senior,Business,Individual Contributor,130000.0
-28.0,Female,Bachelor's,2.0,18,11,6,1,Junior,Sales & Marketing,Creative,40000.0
-32.0,Male,Bachelor's,5.0,26,16,9,1,Senior,Sales & Marketing,Management,75000.0
-45.0,Female,Master's,16.0,29,17,9,2,Director,Sales & Marketing,Sales/Marketing,180000.0
-38.0,Male,PhD,11.0,28,14,12,0,Senior,Other,Analysis,120000.0
-25.0,Male,Bachelor's,0.0,17,11,10,1,Junior,Software/data,Analysis,35000.0
-51.0,Female,Bachelor's,22.0,27,14,7,2,Senior,People & Support,Management,130000.0
-33.0,Male,Master's,7.0,26,14,11,0,Senior,Software/data,Analysis,85000.0
-40.0,Female,Bachelor's,12.0,32,17,9,2,Senior,Management,Support,60000.0
-47.0,Male,Master's,19.0,29,13,14,2,Senior,Finance & Operations,Leadership,200000.0
-29.0,Female,Bachelor's,3.0,30,13,13,1,Junior,Product & Design,Creative,50000.0
-36.0,Male,Bachelor's,9.0,29,13,13,1,Senior,Sales & Marketing,Management,95000.0
-27.0,Female,Master's,2.0,26,15,9,1,Junior,Product & Design,Analysis,65000.0
-43.0,Male,PhD,17.0,27,16,13,2,Senior,Other,Engineer,140000.0
-30.0,Female,Bachelor's,4.0,30,16,15,0,Junior,Sales & Marketing,Management,55000.0
-35.0,Male,Master's,7.0,37,13,10,2,Senior,Product & Design,Management,105000.0
-51.0,Female,Master's,23.0,31,15,11,2,Director,Finance & Operations,Leadership,170000.0
-29.0,Male,Bachelor's,3.0,31,17,10,0,Junior,Sales & Marketing,Analysis,50000.0
-40.0,Female,Bachelor's,12.0,33,14,8,0,Senior,People & Support,Management,80000.0
-47.0,Male,PhD,21.0,31,16,16,1,Senior,Software/data,Analysis,180000.0
-26.0,Male,Bachelor's,1.0,22,7,13,0,Junior,Finance & Operations,Individual Contributor,35000.0
-38.0,Female,Master's,10.0,28,10,11,1,Senior,Sales & Marketing,Management,90000.0
-46.0,Male,Bachelor's,19.0,35,17,9,1,Senior,Software/data,Management,120000.0
-31.0,Female,Bachelor's,5.0,30,17,8,0,Senior,People & Support,Individual Contributor,45000.0
-34.0,Male,Master's,8.0,26,18,9,1,Senior,Business,Management,90000.0
-49.0,Female,Master's,18.0,30,16,11,1,Senior,Finance & Operations,Analysis,150000.0
-33.0,Male,Bachelor's,6.0,29,10,12,3,Senior,Software/data,Engineer,65000.0
-39.0,Female,Bachelor's,11.0,29,12,13,2,Senior,People & Support,Individual Contributor,70000.0
-45.0,Male,PhD,16.0,27,11,14,0,Senior,Other,Leadership,190000.0
-28.0,Male,Bachelor's,2.0,30,13,11,0,Junior,Software/data,Support,40000.0
-42.0,Female,Master's,14.0,30,14,11,1,Senior,Sales & Marketing,Leadership,120000.0
-37.0,Male,Bachelor's,10.0,29,13,13,0,Senior,Other,Management,95000.0
-50.0,Female,Bachelor's,22.0,25,14,12,1,Senior,Finance & Operations,Management,160000.0
-32.0,Male,Master's,6.0,33,14,11,0,Senior,Software/data,Engineer,100000.0
-48.0,Female,Master's,20.0,30,11,5,1,Director,People & Support,Leadership,180000.0
-30.0,Female,Bachelor's,3.0,31,15,13,1,Junior,Sales & Marketing,Management,55000.0
-36.0,Male,Bachelor's,8.0,25,14,13,0,Senior,People & Support,Individual Contributor,70000.0
-41.0,Female,Master's,13.0,26,11,12,3,Senior,Software/data,Analysis,80000.0
-25.0,Male,Bachelor's,0.0,21,17,11,1,Junior,Sales & Marketing,Individual Contributor,30000.0
-52.0,Male,PhD,24.0,35,16,7,2,C-level,Software/data,Leadership,250000.0
-29.0,Female,Bachelor's,2.0,28,12,10,2,Junior,Other,Creative,40000.0
-34.0,Female,Master's,10.0,30,14,14,0,Senior,Finance & Operations,Individual Contributor,95000.0
-27.0,Male,Bachelor's,2.0,29,12,9,1,Junior,People & Support,Management,45000.0
-40.0,Female,Bachelor's,15.0,33,15,9,2,Senior,People & Support,Individual Contributor,80000.0
-46.0,Male,Master's,21.0,27,13,11,2,Senior,Management,Management,135000.0
-31.0,Female,Bachelor's,6.0,30,11,13,0,Senior,Sales & Marketing,Support,55000.0
-36.0,Male,PhD,11.0,24,11,13,1,Principal,Other,Analysis,120000.0
-29.0,Female,Bachelor's,3.0,36,11,10,1,Junior,Sales & Marketing,Individual Contributor,40000.0
-43.0,Male,Bachelor's,18.0,35,19,7,2,Senior,Finance & Operations,Management,105000.0
-52.0,Female,Master's,25.0,32,13,10,0,Senior,Sales & Marketing,Management,170000.0
-33.0,Male,Bachelor's,7.0,26,17,13,2,Senior,Business,Analysis,75000.0
-39.0,Female,Bachelor's,12.0,27,13,8,1,Senior,People & Support,Support,65000.0
-47.0,Male,PhD,22.0,29,16,8,2,Senior,Other,Analysis,160000.0
-26.0,Male,Bachelor's,1.0,30,13,8,1,Junior,Software/data,Engineer,35000.0
-38.0,Female,Master's,10.0,28,13,12,2,Senior,Sales & Marketing,Management,90000.0
-45.0,Male,Bachelor's,20.0,24,15,14,0,Senior,Finance & Operations,Analysis,110000.0
-31.0,Female,Bachelor's,5.0,27,15,11,1,Senior,Management,Support,45000.0
-35.0,Male,Master's,8.0,29,18,9,1,Senior,Sales & Marketing,Management,95000.0
-49.0,Female,Master's,19.0,34,12,8,0,Senior,People & Support,Management,150000.0
-33.0,Male,Bachelor's,5.0,22,18,7,3,Junior,Software/data,Engineer,50000.0
-39.0,Female,Master's,13.0,28,12,10,1,Senior,Management,Support,80000.0
-44.0,Male,PhD,16.0,33,14,4,2,C-level,Software/data,Leadership,220000.0
-30.0,Female,Bachelor's,3.0,29,10,11,2,Junior,Sales & Marketing,Creative,50000.0
-36.0,Male,Bachelor's,7.0,26,18,12,3,Senior,Software/data,Support,60000.0
-41.0,Female,Master's,14.0,35,12,11,0,Senior,Sales & Marketing,Analysis,100000.0
-28.0,Male,Bachelor's,2.0,29,14,6,0,Junior,People & Support,Management,40000.0
-42.0,Female,Master's,15.0,30,15,10,4,Senior,Product & Design,Creative,110000.0
-50.0,Female,Bachelor's,22.0,34,15,15,1,Senior,Finance & Operations,Analysis,130000.0
-32.0,Male,Master's,6.0,30,14,12,1,Senior,Business,Analysis,90000.0
-23.0,Female,Bachelor's,0.5,32,15,10,0,Junior,Sales & Marketing,Analysis,35000.0
-31.0,Male,Master's,6.0,31,12,14,0,Senior,Finance & Operations,Analysis,95000.0
-40.0,Female,Bachelor's,15.0,28,16,10,1,Senior,Management,Management,65000.0
-48.0,Male,PhD,20.0,26,13,15,0,Principal,Other,Engineer,170000.0
-29.0,Female,Bachelor's,3.0,36,10,8,2,Junior,People & Support,Individual Contributor,45000.0
-35.0,Male,Master's,10.0,34,12,12,2,Senior,Product & Design,Management,120000.0
-42.0,Female,Bachelor's,17.0,34,15,7,4,Senior,Sales & Marketing,Management,100000.0
-53.0,Male,Master's,25.0,34,10,12,2,Director,Sales & Marketing,Sales/Marketing,180000.0
-33.0,Female,Bachelor's,5.0,21,11,5,3,Junior,Finance & Operations,Analysis,50000.0
-38.0,Male,Bachelor's,11.0,19,10,7,2,Senior,People & Support,Management,80000.0
-44.0,Female,PhD,16.0,24,11,8,2,Senior,Other,Analysis,140000.0
-37.0,Female,Master's,9.0,33,16,7,2,Senior,People & Support,Individual Contributor,95000.0
-45.0,Male,Bachelor's,18.0,31,13,8,1,Senior,Sales & Marketing,Management,110000.0
-32.0,Female,Bachelor's,4.0,41,15,8,1,Junior,Sales & Marketing,Support,50000.0
-34.0,Male,Master's,8.0,25,12,12,3,Senior,Software/data,Engineer,105000.0
-50.0,Female,Master's,21.0,22,12,9,2,Senior,Finance & Operations,Leadership,160000.0
-29.0,Male,Bachelor's,3.0,31,12,12,1,Junior,Software/data,Creative,45000.0
-40.0,Female,Master's,12.0,28,20,11,0,Senior,People & Support,Support,100000.0
-47.0,Male,PhD,22.0,29,13,11,1,Senior,Other,Analysis,160000.0
-27.0,Male,Bachelor's,1.0,30,15,8,2,Junior,Sales & Marketing,Individual Contributor,35000.0
-39.0,Female,Bachelor's,10.0,25,14,14,3,Senior,Management,Support,55000.0
-46.0,Male,Master's,19.0,34,11,10,1,Senior,Management,Management,140000.0
-30.0,Female,Bachelor's,4.0,33,11,7,1,Junior,Sales & Marketing,Management,50000.0
-36.0,Male,Bachelor's,7.0,27,14,11,0,Junior,Software/data,Analysis,60000.0
-43.0,Female,Master's,14.0,30,13,12,0,Senior,Sales & Marketing,Management,120000.0
-28.0,Male,Bachelor's,2.0,24,13,11,4,Junior,Business,Analysis,40000.0
-41.0,Female,Master's,13.0,29,15,11,0,Senior,Sales & Marketing,Management,110000.0
-33.0,Male,Bachelor's,5.0,25,17,11,2,Junior,Software/data,Engineer,50000.0
-47.0,Male,Bachelor's,20.0,31,17,9,2,Senior,Sales & Marketing,Management,135000.0
-25.0,Female,Master's,1.5,23,13,6,1,Junior,Sales & Marketing,Support,40000.0
-34.0,Male,Bachelor's,8.0,27,13,7,1,Senior,Business,Analysis,90000.0
-42.0,Female,PhD,16.0,28,8,10,2,Senior,Software/data,Analysis,150000.0
-31.0,Male,Bachelor's,4.0,34,11,14,1,Junior,Other,Management,60000.0
-38.0,Female,Bachelor's,10.0,27,14,14,1,Senior,Finance & Operations,Individual Contributor,80000.0
-45.0,Male,Master's,19.0,27,16,6,3,Director,Sales & Marketing,Sales/Marketing,175000.0
-29.0,Female,Bachelor's,3.0,22,11,8,1,Junior,People & Support,Individual Contributor,45000.0
-36.0,Male,Master's,11.0,28,13,11,1,Senior,Business,Management,120000.0
-43.0,Female,PhD,18.0,35,13,15,2,Senior,Product & Design,Creative,140000.0
-26.0,Male,Bachelor's,2.0,24,10,5,1,Junior,People & Support,Support,35000.0
-37.0,Female,Master's,9.0,29,13,9,3,Senior,Sales & Marketing,Analysis,95000.0
-44.0,Male,Bachelor's,14.0,14,4,3,0,Senior,Software/data,Support,110000.0
-32.0,Female,Bachelor's,5.0,28,13,15,2,Junior,Finance & Operations,Analysis,50000.0
-33.0,Male,Master's,7.0,29,15,11,0,Senior,Finance & Operations,Management,115000.0
-51.0,Female,PhD,23.0,32,11,11,0,Director,People & Support,Leadership,185000.0
-28.0,Male,Bachelor's,2.0,31,14,12,2,Junior,Software/data,Engineer,40000.0
-39.0,Female,Bachelor's,12.0,36,11,12,0,Senior,Sales & Marketing,Individual Contributor,90000.0
-48.0,Male,Master's,21.0,33,15,8,1,Director,Product & Design,Management,175000.0
-30.0,Female,Bachelor's,3.0,31,15,10,2,Junior,Sales & Marketing,Creative,45000.0
-35.0,Male,Bachelor's,7.0,30,17,8,1,Senior,Sales & Marketing,Support,80000.0
-41.0,Female,Master's,13.0,34,13,7,0,Senior,People & Support,Management,120000.0
-27.0,Male,Bachelor's,1.5,20,12,9,1,Junior,Business,Individual Contributor,35000.0
-40.0,Female,Bachelor's,14.0,23,12,13,2,Senior,People & Support,Management,110000.0
-46.0,Male,PhD,18.0,26,12,10,3,Senior,Other,Analysis,150000.0
-31.0,Female,Bachelor's,4.0,33,10,13,3,Junior,People & Support,Support,50000.0
-34.0,Male,Master's,9.0,29,14,18,1,Senior,Software/data,Engineer,105000.0
-50.0,Female,Master's,20.0,26,12,12,2,Director,Finance & Operations,Leadership,180000.0
-29.0,Male,Bachelor's,2.0,29,15,7,0,Junior,Sales & Marketing,Support,40000.0
-43.0,Male,Bachelor's,16.0,26,12,15,0,Senior,Management,Management,140000.0
-26.0,Female,Master's,1.5,28,15,14,0,Junior,Software/data,Analysis,45000.0
-35.0,Male,Bachelor's,7.0,27,13,15,1,Senior,Finance & Operations,Analysis,85000.0
-42.0,Female,PhD,18.0,31,15,13,3,Senior,Sales & Marketing,Management,140000.0
-38.0,Female,Bachelor's,10.0,29,10,9,1,Senior,People & Support,Support,80000.0
-46.0,Male,Master's,20.0,28,16,14,1,Director,Finance & Operations,Leadership,170000.0
-29.0,Female,Bachelor's,2.0,27,11,7,1,Junior,Sales & Marketing,Individual Contributor,40000.0
-37.0,Male,Master's,9.0,34,13,15,0,Senior,Business,Analysis,105000.0
-44.0,Female,PhD,15.0,33,13,14,0,Senior,Product & Design,Creative,145000.0
-27.0,Male,Bachelor's,2.0,37,13,13,2,Junior,Product & Design,Management,40000.0
-36.0,Female,Bachelor's,8.0,39,15,7,2,Senior,Sales & Marketing,Support,85000.0
-43.0,Male,Bachelor's,14.0,23,18,14,1,Senior,Software/data,Management,130000.0
-33.0,Female,Master's,6.0,26,12,15,1,Senior,Finance & Operations,Analysis,95000.0
-34.0,Male,Bachelor's,9.0,24,14,9,2,Senior,Other,Analysis,100000.0
-50.0,Female,PhD,22.0,30,18,7,2,Director,Sales & Marketing,Leadership,180000.0
-28.0,Male,Bachelor's,1.5,27,13,11,3,Junior,Finance & Operations,Analysis,35000.0
-39.0,Female,Bachelor's,12.0,25,12,9,0,Senior,Sales & Marketing,Individual Contributor,95000.0
-47.0,Male,Master's,19.0,26,12,14,2,Director,Business,Leadership,170000.0
-30.0,Female,Bachelor's,3.0,24,11,10,2,Junior,Sales & Marketing,Management,45000.0
-34.0,Male,Bachelor's,7.0,32,13,7,4,Senior,Product & Design,Management,95000.0
-40.0,Female,Master's,13.0,26,9,10,1,Senior,People & Support,Support,120000.0
-28.0,Male,Bachelor's,2.0,31,12,11,2,Junior,Business,Analysis,40000.0
-41.0,Female,Bachelor's,11.0,32,17,8,1,Senior,Sales & Marketing,Support,90000.0
-45.0,Male,PhD,17.0,28,14,15,0,Senior,Software/data,Analysis,155000.0
-32.0,Female,Bachelor's,5.0,30,18,10,1,Junior,People & Support,Management,55000.0
-35.0,Male,Master's,9.0,27,16,16,3,Senior,Software/data,Engineer,110000.0
-49.0,Female,Master's,21.0,19,9,10,1,Senior,People & Support,Leadership,180000.0
-30.0,Male,Bachelor's,3.0,29,14,6,2,Junior,Sales & Marketing,Support,45000.0
-44.0,Male,Bachelor's,16.0,33,12,9,0,Senior,Sales & Marketing,Management,130000.0
-27.0,Female,Master's,1.5,19,8,11,1,Junior,Product & Design,Creative,45000.0
-36.0,Male,Bachelor's,7.0,29,13,12,1,Senior,Finance & Operations,Individual Contributor,90000.0
-41.0,Female,PhD,17.0,31,12,13,0,Senior,Sales & Marketing,Leadership,160000.0
-31.0,Male,Bachelor's,4.0,28,12,10,0,Junior,People & Support,Individual Contributor,50000.0
-39.0,Female,Bachelor's,10.0,22,11,13,2,Senior,Finance & Operations,Management,120000.0
-47.0,Male,Master's,20.0,29,13,15,2,Director,Finance & Operations,Leadership,170000.0
-30.0,Female,Bachelor's,2.0,23,10,4,2,Junior,Sales & Marketing,Support,40000.0
-38.0,Male,Master's,9.0,26,14,8,2,Senior,Business,Individual Contributor,110000.0
-45.0,Female,PhD,15.0,32,12,11,1,Senior,Product & Design,Creative,150000.0
-28.0,Male,Bachelor's,2.0,26,12,10,0,Junior,Business,Individual Contributor,40000.0
-35.0,Female,Bachelor's,8.0,36,14,6,1,Senior,Sales & Marketing,Analysis,85000.0
-44.0,Male,Bachelor's,14.0,25,16,13,1,Senior,Software/data,Engineer,130000.0
-34.0,Female,Master's,6.0,34,12,11,1,Senior,Finance & Operations,Individual Contributor,100000.0
-35.0,Male,Bachelor's,9.0,17,12,6,3,Senior,Management,Support,95000.0
-50.0,Female,PhD,22.0,21,15,8,1,Senior,Finance & Operations,Leadership,180000.0
-29.0,Male,Bachelor's,1.5,28,16,12,1,Junior,Business,Analysis,35000.0
-48.0,Male,Master's,19.0,27,15,8,1,Senior,Sales & Marketing,Leadership,170000.0
-31.0,Female,Bachelor's,3.0,31,15,11,1,Junior,Sales & Marketing,Support,45000.0
-33.0,Male,Bachelor's,7.0,35,17,10,0,Senior,Product & Design,Management,100000.0
-42.0,Female,Master's,13.0,27,16,9,1,Senior,People & Support,Management,140000.0
-28.0,Male,Bachelor's,2.0,30,10,12,0,Junior,Finance & Operations,Analysis,40000.0
-46.0,Male,PhD,18.0,28,12,18,0,Senior,Software/data,Analysis,160000.0
-33.0,Female,Bachelor's,5.0,30,14,13,0,Junior,Finance & Operations,Management,70000.0
-37.0,Male,Master's,9.0,27,14,15,2,Senior,Software/data,Management,120000.0
-51.0,Female,Master's,21.0,27,9,7,1,Director,People & Support,Leadership,190000.0
-30.0,Male,Bachelor's,3.0,27,14,6,1,Junior,Sales & Marketing,Support,45000.0
-43.0,Male,Bachelor's,15.0,32,14,14,0,Senior,Management,Management,120000.0
-27.0,Female,Master's,1.5,26,8,10,1,Junior,Other,Analysis,50000.0
-35.0,Male,Bachelor's,8.0,29,18,16,2,Senior,Finance & Operations,Analysis,85000.0
-42.0,Female,PhD,13.0,34,11,8,0,Senior,Sales & Marketing,Management,140000.0
-37.0,Female,Bachelor's,9.0,28,13,18,0,Senior,Finance & Operations,Analysis,100000.0
-45.0,Male,Master's,16.0,27,13,16,3,Senior,Software/data,Engineer,140000.0
-33.0,Female,Bachelor's,5.0,28,13,8,2,Junior,Finance & Operations,Analysis,70000.0
-39.0,Male,Bachelor's,10.0,31,15,10,1,Senior,Sales & Marketing,Support,120000.0
-44.0,Female,PhD,18.0,36,11,11,0,Senior,People & Support,Management,160000.0
-29.0,Male,Bachelor's,1.5,26,15,12,3,Junior,Business,Analysis,40000.0
-38.0,Female,Bachelor's,10.0,40,13,6,0,Senior,Product & Design,Management,120000.0
-46.0,Male,PhD,19.0,33,14,12,1,Senior,Software/data,Analysis,150000.0
-34.0,Female,Bachelor's,6.0,39,12,11,2,Junior,Sales & Marketing,Analysis,70000.0
-36.0,Male,Bachelor's,8.0,28,19,9,2,Senior,Finance & Operations,Management,95000.0
-49.0,Female,Master's,21.0,26,15,9,1,Director,Sales & Marketing,Leadership,180000.0
-31.0,Male,Bachelor's,3.0,31,14,12,1,Junior,Finance & Operations,Analysis,50000.0
-41.0,Female,Bachelor's,11.0,29,13,11,2,Senior,Management,Support,95000.0
-47.0,Male,Master's,20.0,32,13,12,1,Director,Finance & Operations,Leadership,170000.0
-30.0,Female,Bachelor's,2.0,25,11,5,2,Junior,Sales & Marketing,Support,40000.0
-38.0,Male,Master's,9.0,28,15,15,0,Senior,Business,Individual Contributor,110000.0
-45.0,Female,PhD,15.0,29,16,12,1,Senior,Product & Design,Creative,150000.0
-28.0,Male,Bachelor's,2.0,30,15,9,2,Junior,Business,Individual Contributor,40000.0
-35.0,Female,Bachelor's,8.0,35,13,12,1,Senior,Sales & Marketing,Analysis,85000.0
-44.0,Male,Bachelor's,14.0,34,9,13,0,Senior,Software/data,Engineer,130000.0
-34.0,Female,Master's,6.0,28,19,17,1,Senior,Finance & Operations,Individual Contributor,100000.0
-35.0,Male,Bachelor's,9.0,31,11,8,1,Senior,Management,Support,95000.0
-50.0,Female,PhD,22.0,32,12,12,1,Senior,Finance & Operations,Leadership,180000.0
-29.0,Male,Bachelor's,1.5,21,15,7,3,Junior,Business,Analysis,350.0
-37.0,Female,Bachelor's,10.0,29,13,16,0,Senior,Finance & Operations,Management,120000.0
-46.0,Male,PhD,18.0,30,15,13,0,Senior,Software/data,Analysis,160000.0
-31.0,Female,Bachelor's,3.0,34,12,9,3,Junior,Sales & Marketing,Support,50000.0
-42.0,Male,Bachelor's,12.0,25,16,7,1,Senior,Finance & Operations,Management,110000.0
-29.0,Female,Bachelor's,1.5,26,16,10,1,Junior,Sales & Marketing,Individual Contributor,40000.0
-36.0,Male,Bachelor's,8.0,31,14,11,0,Senior,Sales & Marketing,Support,95000.0
-44.0,Female,Master's,15.0,38,12,11,2,Senior,People & Support,Support,140000.0
-33.0,Male,Bachelor's,4.0,20,11,8,0,Junior,Finance & Operations,Management,60000.0
-39.0,Female,Bachelor's,9.0,33,14,10,1,Senior,Sales & Marketing,Support,110000.0
-45.0,Male,PhD,16.0,34,15,8,0,Senior,Software/data,Engineer,150000.0
-32.0,Female,Bachelor's,4.0,31,10,11,1,Junior,Sales & Marketing,Management,60000.0
-37.0,Male,Bachelor's,8.0,29,17,17,0,Senior,Finance & Operations,Analysis,90000.0
-47.0,Female,Master's,20.0,25,14,7,7,Director,Sales & Marketing,Sales/Marketing,180000.0
-30.0,Male,Bachelor's,2.0,21,9,3,0,Junior,Business,Analysis,40000.0
-38.0,Female,Bachelor's,9.0,29,13,14,1,Senior,Management,Management,120000.0
-46.0,Male,PhD,17.0,38,9,14,0,Senior,Software/data,Analysis,160000.0
-34.0,Female,Bachelor's,5.0,31,12,16,1,Junior,Finance & Operations,Analysis,70000.0
-36.0,Male,Bachelor's,8.0,27,10,4,1,Senior,Product & Design,Management,95000.0
-49.0,Female,Master's,21.0,25,16,11,2,Director,Finance & Operations,Leadership,180000.0
-31.0,Male,Bachelor's,3.0,26,16,12,1,Junior,Finance & Operations,Analysis,50000.0
-41.0,Female,Bachelor's,11.0,26,16,8,2,Senior,Management,Support,95000.0
-47.0,Male,Master's,19.0,34,12,15,1,Senior,Sales & Marketing,Leadership,170000.0
-29.0,Female,Bachelor's,1.5,31,12,9,2,Junior,Business,Individual Contributor,35000.0
-35.0,Male,Bachelor's,9.0,30,14,12,0,Senior,Finance & Operations,Management,100000.0
-44.0,Female,PhD,15.0,37,14,10,0,Senior,Product & Design,Creative,150000.0
-33.0,Male,Bachelor's,4.0,24,11,11,1,Junior,Business,Analysis,60000.0
-35.0,Female,Bachelor's,8.0,38,13,11,1,Senior,Sales & Marketing,Analysis,85000.0
-44.0,Male,Bachelor's,13.0,31,11,12,0,Senior,Software/data,Engineer,130000.0
-32.0,Male,Bachelor's,4.0,29,9,10,1,Junior,Product & Design,Management,65000.0
-38.0,Female,Bachelor's,10.0,32,16,14,0,Senior,Business,Analysis,110000.0
-49.0,Male,PhD,21.0,26,17,15,0,Senior,Finance & Operations,Leadership,180000.0
-29.0,Female,Bachelor's,2.0,29,15,5,1,Junior,Sales & Marketing,Support,40000.0
-35.0,Male,Bachelor's,7.0,32,14,10,1,Senior,Business,Management,90000.0
-45.0,Female,Master's,14.0,30,13,11,0,Senior,People & Support,Management,140000.0
-33.0,Male,Bachelor's,4.0,27,13,13,0,Junior,Finance & Operations,Analysis,60000.0
-40.0,Female,Bachelor's,12.0,33,19,8,1,Senior,Sales & Marketing,Management,130000.0
-44.0,Male,PhD,16.0,30,17,17,0,Senior,Software/data,Analysis,160000.0
-30.0,Female,Bachelor's,2.0,25,13,11,3,Junior,Finance & Operations,Support,40000.0
-37.0,Male,Bachelor's,9.0,32,12,16,0,Senior,Sales & Marketing,Analysis,100000.0
-48.0,Female,Master's,20.0,32,11,10,1,Director,People & Support,Support,180000.0
-31.0,Male,Bachelor's,3.0,28,9,8,1,Junior,Other,Management,55000.0
-38.0,Female,Bachelor's,9.0,31,15,6,0,Senior,Finance & Operations,Support,120000.0
-45.0,Male,PhD,16.0,30,15,16,1,Senior,Software/data,Engineer,150000.0
-33.0,Female,Bachelor's,5.0,30,16,11,2,Junior,Sales & Marketing,Management,70000.0
-36.0,Male,Bachelor's,8.0,32,14,15,2,Senior,Business,Analysis,95000.0
-49.0,Female,Master's,21.0,27,14,12,1,Director,Sales & Marketing,Leadership,180000.0
-31.0,Male,Bachelor's,3.0,24,15,9,2,Junior,Finance & Operations,Analysis,50000.0
-42.0,Female,Bachelor's,12.0,28,16,10,0,Senior,Management,Management,120000.0
-47.0,Male,Master's,19.0,29,16,7,2,Director,Sales & Marketing,Sales/Marketing,170000.0
-29.0,Female,Bachelor's,1.5,21,10,6,1,Junior,Business,Individual Contributor,35000.0
-35.0,Male,Bachelor's,9.0,22,10,15,0,Senior,Finance & Operations,Management,100000.0
-44.0,Female,PhD,15.0,30,14,12,1,Senior,Product & Design,Creative,150000.0
-33.0,Male,Bachelor's,4.0,23,10,6,1,Junior,Business,Analysis,60000.0
-35.0,Female,Bachelor's,8.0,37,20,7,1,Senior,Sales & Marketing,Analysis,85000.0
-34.0,Female,Master's,6.0,30,12,17,0,Senior,Finance & Operations,Individual Contributor,80000.0
-36.0,Male,Bachelor's,8.0,32,16,14,2,Senior,Sales & Marketing,Support,95000.0
-30.0,Female,Bachelor's,2.0,39,15,7,1,Junior,People & Support,Support,40000.0
-37.0,Male,Bachelor's,10.0,27,13,8,1,Senior,Business,Management,120000.0
-45.0,Female,Master's,16.0,34,9,12,1,Senior,Sales & Marketing,Management,160000.0
-32.0,Male,Bachelor's,4.0,29,12,7,0,Junior,Finance & Operations,Individual Contributor,65000.0
-39.0,Female,Bachelor's,12.0,25,13,13,1,Senior,Management,Management,130000.0
-47.0,Male,PhD,20.0,27,11,6,2,Director,Software/data,Engineer,180000.0
-29.0,Female,Bachelor's,2.0,38,12,6,0,Junior,Sales & Marketing,Analysis,40000.0
-36.0,Male,Bachelor's,9.0,30,13,9,1,Senior,Finance & Operations,Management,100000.0
-43.0,Female,PhD,15.0,36,10,19,0,Senior,Software/data,Analysis,150000.0
-32.0,Male,Bachelor's,3.0,23,16,4,1,Junior,Sales & Marketing,Support,55000.0
-38.0,Female,Bachelor's,10.0,40,14,12,0,Senior,Business,Analysis,110000.0
-48.0,Male,Master's,21.0,28,11,8,2,Director,Sales & Marketing,Sales/Marketing,180000.0
-31.0,Female,Bachelor's,3.0,32,14,8,2,Junior,Business,Individual Contributor,50000.0
-40.0,Male,Bachelor's,12.0,27,18,14,1,Senior,Finance & Operations,Analysis,130000.0
-45.0,Female,PhD,16.0,34,13,15,1,Senior,Software/data,Creative,160000.0
-33.0,Male,Bachelor's,4.0,26,14,11,2,Junior,Product & Design,Management,60000.0
-36.0,Female,Bachelor's,8.0,31,15,11,1,Senior,Sales & Marketing,Management,95000.0
-47.0,Male,Master's,19.0,29,14,11,1,Director,Finance & Operations,Leadership,170000.0
-29.0,Female,Bachelor's,2.0,26,15,7,2,Junior,Other,Management,40000.0
-34.0,Male,Bachelor's,7.0,25,11,11,0,Senior,Finance & Operations,Support,90000.0
-44.0,Female,PhD,15.0,31,13,12,1,Senior,Business,Analysis,150000.0
-33.0,Male,Bachelor's,5.0,35,12,8,2,Junior,Sales & Marketing,Support,70000.0
-35.0,Female,Bachelor's,8.0,30,16,14,1,Senior,Finance & Operations,Management,90000.0
-43.0,Male,Master's,18.0,26,9,8,4,Director,Sales & Marketing,Sales/Marketing,170000.0
-31.0,Female,Bachelor's,3.0,28,12,16,0,Junior,Finance & Operations,Analysis,50000.0
-41.0,Male,Bachelor's,14.0,35,15,13,1,Senior,Product & Design,Management,150000.0
-44.0,Female,PhD,16.0,35,14,10,1,Senior,Software/data,Engineer,160000.0
-33.0,Male,Bachelor's,4.0,34,15,12,1,Junior,Business,Analysis,60000.0
-35.0,Female,Bachelor's,8.0,37,14,10,1,Senior,Sales & Marketing,Analysis,85000.0
-45.0,Male,Master's,19.0,25,13,12,1,Director,Software/data,Engineer,180000.0
-28.0,Female,Bachelor's,1.0,24,14,9,4,Junior,Finance & Operations,Management,35000.0
-36.0,Male,Bachelor's,8.0,18,7,5,2,Senior,Business,Management,110000.0
-44.0,Female,PhD,16.0,33,11,11,1,Senior,Software/data,Analysis,160000.0
-31.0,Male,Bachelor's,3.0,28,11,6,1,Junior,Sales & Marketing,Support,55000.0
-38.0,Female,Bachelor's,10.0,28,16,12,1,Senior,Business,Analysis,110000.0
-48.0,Male,Master's,21.0,30,13,6,3,Director,Sales & Marketing,Sales/Marketing,180000.0
-31.0,Female,Bachelor's,3.0,28,15,6,2,Junior,Business,Individual Contributor,50000.0
-40.0,Male,Bachelor's,12.0,21,8,12,0,Senior,Finance & Operations,Analysis,130000.0
-45.0,Female,PhD,16.0,36,15,13,1,Senior,Product & Design,Creative,160000.0
-33.0,Male,Bachelor's,4.0,35,14,9,1,Junior,Product & Design,Management,60000.0
-36.0,Female,Bachelor's,8.0,29,17,9,1,Senior,Sales & Marketing,Management,95000.0
-47.0,Male,Master's,19.0,32,18,7,2,Director,Finance & Operations,Leadership,170000.0
-29.0,Female,Bachelor's,2.0,26,13,9,3,Junior,Other,Management,40000.0
-34.0,Male,Bachelor's,7.0,29,15,15,1,Senior,Finance & Operations,Support,90000.0
-44.0,Female,PhD,15.0,33,13,9,1,Senior,Business,Analysis,150000.0
-33.0,Male,Bachelor's,5.0,28,18,6,3,Junior,Sales & Marketing,Support,70000.0
-35.0,Female,Bachelor's,8.0,27,14,12,1,Senior,Finance & Operations,Management,90000.0
-43.0,Male,Master's,18.0,31,10,5,2,Director,Sales & Marketing,Sales/Marketing,170000.0
-31.0,Female,Bachelor's,3.0,25,12,11,1,Junior,Finance & Operations,Analysis,50000.0
-41.0,Male,Bachelor's,14.0,21,11,7,2,Senior,Product & Design,Management,150000.0
-44.0,Female,PhD,16.0,29,9,14,1,Senior,Software/data,Engineer,160000.0
-33.0,Male,Bachelor's,4.0,33,12,11,0,Junior,Business,Analysis,60000.0
-35.0,Female,Bachelor's,8.0,33,14,14,0,Senior,Sales & Marketing,Analysis,85000.0
-43.0,Male,Master's,19.0,27,13,12,2,Director,Finance & Operations,Leadership,170000.0
-29.0,Female,Bachelor's,2.0,31,12,5,2,Junior,Other,Management,40000.0
-34.0,Male,Bachelor's,7.0,22,10,6,0,Senior,Finance & Operations,Support,90000.0
-44.0,Female,PhD,15.0,33,16,11,1,Senior,Business,Analysis,150000.0
+Age,Gender,Education Level,Years of Experience,Salary,noun_count,verb_count,adj_count,adv_count,Seniority,Area,Role
+32.0,Male,Bachelor's,5.0,90000.0,22,10,10,0,Senior,Software/data,Engineer
+28.0,Female,Master's,3.0,65000.0,24,13,7,3,Junior,Software/data,Analysis
+45.0,Male,PhD,15.0,150000.0,26,13,13,0,Senior,Other,Management
+36.0,Female,Bachelor's,7.0,60000.0,26,10,6,0,Senior,Sales & Marketing,Individual Contributor
+52.0,Male,Master's,20.0,200000.0,23,16,8,3,Senior,Other,Leadership
+29.0,Male,Bachelor's,2.0,55000.0,36,16,10,0,Junior,Sales & Marketing,Analysis
+42.0,Female,Master's,12.0,120000.0,25,14,12,1,Senior,Product & Design,Management
+31.0,Male,Bachelor's,4.0,80000.0,28,14,6,1,Junior,Sales & Marketing,Management
+26.0,Female,Bachelor's,1.0,45000.0,31,17,8,2,Junior,Sales & Marketing,Support
+38.0,Male,PhD,10.0,110000.0,23,10,7,0,Senior,Other,Analysis
+29.0,Male,Master's,3.0,75000.0,24,10,15,1,Junior,Software/data,Engineer
+48.0,Female,Bachelor's,18.0,140000.0,33,14,12,0,Senior,People & Support,Management
+35.0,Male,Bachelor's,6.0,65000.0,27,13,16,2,Senior,Finance & Operations,Analysis
+40.0,Female,Master's,14.0,130000.0,31,15,11,2,Senior,Management,Management
+27.0,Male,Bachelor's,2.0,40000.0,23,12,4,2,Junior,People & Support,Individual Contributor
+44.0,Male,Bachelor's,16.0,125000.0,27,15,12,0,Senior,Finance & Operations,Management
+33.0,Female,Master's,7.0,90000.0,31,17,10,2,Senior,Sales & Marketing,Management
+39.0,Male,PhD,12.0,115000.0,29,15,13,1,Senior,Other,Engineer
+25.0,Female,Bachelor's,0.0,35000.0,23,11,11,6,Junior,Other,Support
+51.0,Male,Bachelor's,22.0,180000.0,35,14,10,1,Senior,Sales & Marketing,Leadership
+34.0,Female,Master's,5.0,80000.0,26,17,6,2,Senior,Business,Analysis
+47.0,Male,Master's,19.0,190000.0,21,13,3,2,Senior,Finance & Operations,TopExecs
+30.0,Male,Bachelor's,2.0,50000.0,29,21,10,3,Junior,Software/data,Support
+36.0,Female,Bachelor's,9.0,60000.0,29,19,9,0,Senior,People & Support,Individual Contributor
+41.0,Male,Master's,13.0,140000.0,28,14,14,1,Senior,Finance & Operations,Management
+28.0,Female,Bachelor's,3.0,45000.0,28,19,10,1,Junior,Sales & Marketing,Support
+37.0,Female,Master's,11.0,110000.0,34,12,9,2,Senior,Software/data,Management
+24.0,Male,Bachelor's,1.0,40000.0,20,11,5,1,Junior,Software/data,Engineer
+43.0,Female,PhD,15.0,140000.0,27,15,15,1,Senior,Business,Individual Contributor
+33.0,Male,Master's,6.0,90000.0,23,10,10,3,Senior,Product & Design,Creative
+50.0,Male,Bachelor's,25.0,250000.0,28,15,9,2,C-level,Business,TopExecs
+31.0,Female,Bachelor's,4.0,55000.0,30,9,16,1,Junior,Finance & Operations,Individual Contributor
+29.0,Male,Master's,3.0,75000.0,38,17,11,1,Junior,Software/data,Analysis
+39.0,Female,Bachelor's,10.0,65000.0,31,11,11,1,Senior,Sales & Marketing,Support
+46.0,Male,PhD,20.0,170000.0,26,16,12,0,Senior,Other,Management
+27.0,Male,Bachelor's,2.0,45000.0,29,8,17,2,Junior,Software/data,Creative
+35.0,Female,Bachelor's,7.0,60000.0,36,12,11,0,Senior,People & Support,Individual Contributor
+42.0,Male,Master's,14.0,115000.0,27,14,10,5,Senior,Software/data,Engineer
+26.0,Female,Bachelor's,1.0,40000.0,28,17,10,1,Junior,People & Support,Individual Contributor
+49.0,Male,Bachelor's,21.0,160000.0,32,12,6,1,Senior,Sales & Marketing,Leadership
+34.0,Female,Master's,5.0,80000.0,32,13,11,1,Senior,Product & Design,Creative
+48.0,Male,Master's,18.0,190000.0,27,10,15,1,Senior,Finance & Operations,Leadership
+30.0,Male,Bachelor's,3.0,60000.0,34,11,11,1,Junior,Software/data,Engineer
+36.0,Female,Bachelor's,8.0,45000.0,27,16,14,1,Senior,Management,Support
+41.0,Male,Master's,13.0,130000.0,27,12,10,3,Senior,Business,Individual Contributor
+28.0,Female,Bachelor's,2.0,40000.0,18,11,6,1,Junior,Sales & Marketing,Creative
+32.0,Male,Bachelor's,5.0,75000.0,26,16,9,1,Senior,Sales & Marketing,Management
+45.0,Female,Master's,16.0,180000.0,29,17,9,2,Director,Sales & Marketing,Other
+38.0,Male,PhD,11.0,120000.0,28,14,12,0,Senior,Other,Analysis
+25.0,Male,Bachelor's,0.0,35000.0,17,11,10,1,Junior,Software/data,Analysis
+51.0,Female,Bachelor's,22.0,130000.0,27,14,7,2,Senior,People & Support,Management
+33.0,Male,Master's,7.0,85000.0,26,14,11,0,Senior,Software/data,Analysis
+40.0,Female,Bachelor's,12.0,60000.0,32,17,9,2,Senior,Management,Support
+47.0,Male,Master's,19.0,200000.0,29,13,14,2,Senior,Finance & Operations,TopExecs
+29.0,Female,Bachelor's,3.0,50000.0,30,13,13,1,Junior,Product & Design,Creative
+36.0,Male,Bachelor's,9.0,95000.0,29,13,13,1,Senior,Sales & Marketing,Management
+27.0,Female,Master's,2.0,65000.0,26,15,9,1,Junior,Product & Design,Analysis
+43.0,Male,PhD,17.0,140000.0,27,16,13,2,Senior,Other,Engineer
+30.0,Female,Bachelor's,4.0,55000.0,30,16,15,0,Junior,Sales & Marketing,Management
+35.0,Male,Master's,7.0,105000.0,37,13,10,2,Senior,Product & Design,Management
+51.0,Female,Master's,23.0,170000.0,31,15,11,2,Director,Finance & Operations,Leadership
+29.0,Male,Bachelor's,3.0,50000.0,31,17,10,0,Junior,Sales & Marketing,Analysis
+40.0,Female,Bachelor's,12.0,80000.0,33,14,8,0,Senior,People & Support,Management
+47.0,Male,PhD,21.0,180000.0,31,16,16,1,Senior,Software/data,Analysis
+26.0,Male,Bachelor's,1.0,35000.0,22,7,13,0,Junior,Finance & Operations,Individual Contributor
+38.0,Female,Master's,10.0,90000.0,28,10,11,1,Senior,Sales & Marketing,Management
+46.0,Male,Bachelor's,19.0,120000.0,35,17,9,1,Senior,Software/data,Management
+31.0,Female,Bachelor's,5.0,45000.0,30,17,8,0,Senior,People & Support,Individual Contributor
+34.0,Male,Master's,8.0,90000.0,26,18,9,1,Senior,Business,Management
+49.0,Female,Master's,18.0,150000.0,30,16,11,1,Senior,Finance & Operations,Analysis
+33.0,Male,Bachelor's,6.0,65000.0,29,10,12,3,Senior,Software/data,Engineer
+39.0,Female,Bachelor's,11.0,70000.0,29,12,13,2,Senior,People & Support,Individual Contributor
+45.0,Male,PhD,16.0,190000.0,27,11,14,0,Senior,Other,Leadership
+28.0,Male,Bachelor's,2.0,40000.0,30,13,11,0,Junior,Software/data,Support
+42.0,Female,Master's,14.0,120000.0,30,14,11,1,Senior,Sales & Marketing,Leadership
+37.0,Male,Bachelor's,10.0,95000.0,29,13,13,0,Senior,Other,Management
+50.0,Female,Bachelor's,22.0,160000.0,25,14,12,1,Senior,Finance & Operations,Management
+32.0,Male,Master's,6.0,100000.0,33,14,11,0,Senior,Software/data,Engineer
+48.0,Female,Master's,20.0,180000.0,30,11,5,1,Director,People & Support,Leadership
+30.0,Female,Bachelor's,3.0,55000.0,31,15,13,1,Junior,Sales & Marketing,Management
+36.0,Male,Bachelor's,8.0,70000.0,25,14,13,0,Senior,People & Support,Individual Contributor
+41.0,Female,Master's,13.0,80000.0,26,11,12,3,Senior,Software/data,Analysis
+25.0,Male,Bachelor's,0.0,30000.0,21,17,11,1,Junior,Sales & Marketing,Individual Contributor
+52.0,Male,PhD,24.0,250000.0,35,16,7,2,C-level,Software/data,Leadership
+29.0,Female,Bachelor's,2.0,40000.0,28,12,10,2,Junior,Other,Creative
+34.0,Female,Master's,10.0,95000.0,30,14,14,0,Senior,Finance & Operations,Individual Contributor
+27.0,Male,Bachelor's,2.0,45000.0,29,12,9,1,Junior,People & Support,Management
+40.0,Female,Bachelor's,15.0,80000.0,33,15,9,2,Senior,People & Support,Individual Contributor
+46.0,Male,Master's,21.0,135000.0,27,13,11,2,Senior,Management,Management
+31.0,Female,Bachelor's,6.0,55000.0,30,11,13,0,Senior,Sales & Marketing,Support
+36.0,Male,PhD,11.0,120000.0,24,11,13,1,Principal,Other,Analysis
+29.0,Female,Bachelor's,3.0,40000.0,36,11,10,1,Junior,Sales & Marketing,Individual Contributor
+43.0,Male,Bachelor's,18.0,105000.0,35,19,7,2,Senior,Finance & Operations,Management
+52.0,Female,Master's,25.0,170000.0,32,13,10,0,Senior,Sales & Marketing,Management
+33.0,Male,Bachelor's,7.0,75000.0,26,17,13,2,Senior,Business,Analysis
+39.0,Female,Bachelor's,12.0,65000.0,27,13,8,1,Senior,People & Support,Support
+47.0,Male,PhD,22.0,160000.0,29,16,8,2,Senior,Other,Analysis
+26.0,Male,Bachelor's,1.0,35000.0,30,13,8,1,Junior,Software/data,Engineer
+38.0,Female,Master's,10.0,90000.0,28,13,12,2,Senior,Sales & Marketing,Management
+45.0,Male,Bachelor's,20.0,110000.0,24,15,14,0,Senior,Finance & Operations,Analysis
+31.0,Female,Bachelor's,5.0,45000.0,27,15,11,1,Senior,Management,Support
+35.0,Male,Master's,8.0,95000.0,29,18,9,1,Senior,Sales & Marketing,Management
+49.0,Female,Master's,19.0,150000.0,34,12,8,0,Senior,People & Support,Management
+33.0,Male,Bachelor's,5.0,50000.0,22,18,7,3,Junior,Software/data,Engineer
+39.0,Female,Master's,13.0,80000.0,28,12,10,1,Senior,Management,Support
+44.0,Male,PhD,16.0,220000.0,33,14,4,2,C-level,Software/data,Other
+30.0,Female,Bachelor's,3.0,50000.0,29,10,11,2,Junior,Sales & Marketing,Creative
+36.0,Male,Bachelor's,7.0,60000.0,26,18,12,3,Senior,Software/data,Support
+41.0,Female,Master's,14.0,100000.0,35,12,11,0,Senior,Sales & Marketing,Analysis
+28.0,Male,Bachelor's,2.0,40000.0,29,14,6,0,Junior,People & Support,Management
+42.0,Female,Master's,15.0,110000.0,30,15,10,4,Senior,Product & Design,Creative
+50.0,Female,Bachelor's,22.0,130000.0,34,15,15,1,Senior,Finance & Operations,Analysis
+32.0,Male,Master's,6.0,90000.0,30,14,12,1,Senior,Business,Analysis
+23.0,Female,Bachelor's,0.5,35000.0,32,15,10,0,Junior,Sales & Marketing,Analysis
+31.0,Male,Master's,6.0,95000.0,31,12,14,0,Senior,Finance & Operations,Analysis
+40.0,Female,Bachelor's,15.0,65000.0,28,16,10,1,Senior,Management,Management
+48.0,Male,PhD,20.0,170000.0,26,13,15,0,Principal,Other,Engineer
+29.0,Female,Bachelor's,3.0,45000.0,36,10,8,2,Junior,People & Support,Individual Contributor
+35.0,Male,Master's,10.0,120000.0,34,12,12,2,Senior,Product & Design,Management
+42.0,Female,Bachelor's,17.0,100000.0,34,15,7,4,Senior,Sales & Marketing,Management
+53.0,Male,Master's,25.0,180000.0,34,10,12,2,Director,Sales & Marketing,Other
+33.0,Female,Bachelor's,5.0,50000.0,21,11,5,3,Junior,Finance & Operations,Analysis
+38.0,Male,Bachelor's,11.0,80000.0,19,10,7,2,Senior,People & Support,Management
+44.0,Female,PhD,16.0,140000.0,24,11,8,2,Senior,Other,Analysis
+37.0,Female,Master's,9.0,95000.0,33,16,7,2,Senior,People & Support,Individual Contributor
+45.0,Male,Bachelor's,18.0,110000.0,31,13,8,1,Senior,Sales & Marketing,Management
+32.0,Female,Bachelor's,4.0,50000.0,41,15,8,1,Junior,Sales & Marketing,Support
+34.0,Male,Master's,8.0,105000.0,25,12,12,3,Senior,Software/data,Engineer
+50.0,Female,Master's,21.0,160000.0,22,12,9,2,Director,Finance & Operations,Leadership
+29.0,Male,Bachelor's,3.0,45000.0,31,12,12,1,Junior,Software/data,Creative
+40.0,Female,Master's,12.0,100000.0,28,20,11,0,Senior,People & Support,Support
+47.0,Male,PhD,22.0,160000.0,29,13,11,1,Senior,Other,Analysis
+27.0,Male,Bachelor's,1.0,35000.0,30,15,8,2,Junior,Sales & Marketing,Individual Contributor
+39.0,Female,Bachelor's,10.0,55000.0,25,14,14,3,Senior,Management,Support
+46.0,Male,Master's,19.0,140000.0,34,11,10,1,Senior,Management,Management
+30.0,Female,Bachelor's,4.0,50000.0,33,11,7,1,Junior,Sales & Marketing,Management
+36.0,Male,Bachelor's,7.0,60000.0,27,14,11,0,Junior,Software/data,Analysis
+43.0,Female,Master's,14.0,120000.0,30,13,12,0,Senior,Sales & Marketing,Management
+28.0,Male,Bachelor's,2.0,40000.0,24,13,11,4,Junior,Business,Analysis
+41.0,Female,Master's,13.0,110000.0,29,15,11,0,Senior,Sales & Marketing,Management
+33.0,Male,Bachelor's,5.0,50000.0,25,17,11,2,Junior,Software/data,Engineer
+47.0,Male,Bachelor's,20.0,135000.0,31,17,9,2,Senior,Sales & Marketing,Management
+25.0,Female,Master's,1.5,40000.0,23,13,6,1,Junior,Sales & Marketing,Support
+34.0,Male,Bachelor's,8.0,90000.0,27,13,7,1,Senior,Business,Analysis
+42.0,Female,PhD,16.0,150000.0,28,8,10,2,Senior,Software/data,Analysis
+31.0,Male,Bachelor's,4.0,60000.0,34,11,14,1,Junior,Other,Management
+38.0,Female,Bachelor's,10.0,80000.0,27,14,14,1,Senior,Finance & Operations,Individual Contributor
+45.0,Male,Master's,19.0,175000.0,27,16,6,3,Director,Sales & Marketing,Other
+29.0,Female,Bachelor's,3.0,45000.0,22,11,8,1,Junior,People & Support,Individual Contributor
+36.0,Male,Master's,11.0,120000.0,28,13,11,1,Senior,Business,Management
+43.0,Female,PhD,18.0,140000.0,35,13,15,2,Senior,Product & Design,Creative
+26.0,Male,Bachelor's,2.0,35000.0,24,10,5,1,Junior,People & Support,Support
+37.0,Female,Master's,9.0,95000.0,29,13,9,3,Senior,Sales & Marketing,Analysis
+44.0,Male,Bachelor's,14.0,110000.0,14,4,3,0,Senior,Software/data,Support
+32.0,Female,Bachelor's,5.0,50000.0,28,13,15,2,Junior,Finance & Operations,Analysis
+33.0,Male,Master's,7.0,115000.0,29,15,11,0,Senior,Finance & Operations,Management
+51.0,Female,PhD,23.0,185000.0,32,11,11,0,Director,People & Support,Leadership
+28.0,Male,Bachelor's,2.0,40000.0,31,14,12,2,Junior,Software/data,Engineer
+39.0,Female,Bachelor's,12.0,90000.0,36,11,12,0,Senior,Sales & Marketing,Individual Contributor
+48.0,Male,Master's,21.0,175000.0,33,15,8,1,Director,Product & Design,Management
+30.0,Female,Bachelor's,3.0,45000.0,31,15,10,2,Junior,Sales & Marketing,Creative
+35.0,Male,Bachelor's,7.0,80000.0,30,17,8,1,Senior,Sales & Marketing,Support
+41.0,Female,Master's,13.0,120000.0,34,13,7,0,Senior,People & Support,Management
+27.0,Male,Bachelor's,1.5,35000.0,20,12,9,1,Junior,Business,Individual Contributor
+40.0,Female,Bachelor's,14.0,110000.0,23,12,13,2,Senior,People & Support,Management
+46.0,Male,PhD,18.0,150000.0,26,12,10,3,Senior,Other,Analysis
+31.0,Female,Bachelor's,4.0,50000.0,33,10,13,3,Junior,People & Support,Support
+34.0,Male,Master's,9.0,105000.0,29,14,18,1,Senior,Software/data,Engineer
+50.0,Female,Master's,20.0,180000.0,26,12,12,2,Director,Finance & Operations,Leadership
+29.0,Male,Bachelor's,2.0,40000.0,29,15,7,0,Junior,Sales & Marketing,Support
+43.0,Male,Bachelor's,16.0,140000.0,26,12,15,0,Senior,Management,Management
+26.0,Female,Master's,1.5,45000.0,28,15,14,0,Junior,Software/data,Analysis
+35.0,Male,Bachelor's,7.0,85000.0,27,13,15,1,Senior,Finance & Operations,Analysis
+42.0,Female,PhD,18.0,140000.0,31,15,13,3,Senior,Sales & Marketing,Management
+38.0,Female,Bachelor's,10.0,80000.0,29,10,9,1,Senior,People & Support,Support
+46.0,Male,Master's,20.0,170000.0,28,16,14,1,Director,Finance & Operations,Leadership
+29.0,Female,Bachelor's,2.0,40000.0,27,11,7,1,Junior,Sales & Marketing,Individual Contributor
+37.0,Male,Master's,9.0,105000.0,34,13,15,0,Senior,Business,Analysis
+44.0,Female,PhD,15.0,145000.0,33,13,14,0,Senior,Software/data,Creative
+27.0,Male,Bachelor's,2.0,40000.0,37,13,13,2,Junior,Product & Design,Management
+36.0,Female,Bachelor's,8.0,85000.0,39,15,7,2,Senior,Sales & Marketing,Support
+43.0,Male,Bachelor's,14.0,130000.0,23,18,14,1,Senior,Software/data,Management
+33.0,Female,Master's,6.0,95000.0,26,12,15,1,Senior,Finance & Operations,Analysis
+34.0,Male,Bachelor's,9.0,100000.0,24,14,9,2,Senior,Software/data,Analysis
+50.0,Female,PhD,22.0,180000.0,30,18,7,2,Director,Sales & Marketing,Other
+28.0,Male,Bachelor's,1.5,35000.0,27,13,11,3,Junior,Finance & Operations,Analysis
+39.0,Female,Bachelor's,12.0,95000.0,25,12,9,0,Senior,Sales & Marketing,Individual Contributor
+47.0,Male,Master's,19.0,170000.0,26,12,14,2,Director,Business,Leadership
+30.0,Female,Bachelor's,3.0,45000.0,24,11,10,2,Junior,Sales & Marketing,Management
+34.0,Male,Bachelor's,7.0,95000.0,32,13,7,4,Senior,Product & Design,Management
+40.0,Female,Master's,13.0,120000.0,26,9,10,1,Senior,People & Support,Support
+28.0,Male,Bachelor's,2.0,40000.0,31,12,11,2,Junior,Business,Analysis
+41.0,Female,Bachelor's,11.0,90000.0,32,17,8,1,Senior,Sales & Marketing,Support
+45.0,Male,PhD,17.0,155000.0,28,14,15,0,Senior,Software/data,Analysis
+32.0,Female,Bachelor's,5.0,55000.0,30,18,10,1,Junior,People & Support,Management
+35.0,Male,Master's,9.0,110000.0,27,16,16,3,Senior,Software/data,Engineer
+49.0,Female,Master's,21.0,180000.0,19,9,10,1,Senior,People & Support,Leadership
+30.0,Male,Bachelor's,3.0,45000.0,29,14,6,2,Junior,Sales & Marketing,Support
+44.0,Male,Bachelor's,16.0,130000.0,33,12,9,0,Senior,Sales & Marketing,Management
+27.0,Female,Master's,1.5,45000.0,19,8,11,1,Junior,Product & Design,Creative
+36.0,Male,Bachelor's,7.0,90000.0,29,13,12,1,Senior,Finance & Operations,Individual Contributor
+41.0,Female,PhD,17.0,160000.0,31,12,13,0,Senior,Sales & Marketing,Leadership
+31.0,Male,Bachelor's,4.0,50000.0,28,12,10,0,Junior,People & Support,Individual Contributor
+39.0,Female,Bachelor's,10.0,120000.0,22,11,13,2,Senior,Finance & Operations,Management
+47.0,Male,Master's,20.0,170000.0,29,13,15,2,Director,Finance & Operations,Leadership
+30.0,Female,Bachelor's,2.0,40000.0,23,10,4,2,Junior,Sales & Marketing,Support
+38.0,Male,Master's,9.0,110000.0,26,14,8,2,Senior,Business,Individual Contributor
+45.0,Female,PhD,15.0,150000.0,32,12,11,1,Senior,Product & Design,Creative
+28.0,Male,Bachelor's,2.0,40000.0,26,12,10,0,Junior,Business,Individual Contributor
+35.0,Female,Bachelor's,8.0,85000.0,36,14,6,1,Senior,Sales & Marketing,Analysis
+44.0,Male,Bachelor's,14.0,130000.0,25,16,13,1,Senior,Software/data,Engineer
+34.0,Female,Master's,6.0,100000.0,34,12,11,1,Senior,Finance & Operations,Individual Contributor
+35.0,Male,Bachelor's,9.0,95000.0,17,12,6,3,Senior,Management,Support
+50.0,Female,PhD,22.0,180000.0,21,15,8,1,Director,Finance & Operations,Leadership
+29.0,Male,Bachelor's,1.5,35000.0,28,16,12,1,Junior,Finance & Operations,Analysis
+48.0,Male,Master's,19.0,170000.0,27,15,8,1,Senior,Sales & Marketing,Leadership
+31.0,Female,Bachelor's,3.0,45000.0,31,15,11,1,Junior,Sales & Marketing,Support
+33.0,Male,Bachelor's,7.0,100000.0,35,17,10,0,Senior,Product & Design,Management
+42.0,Female,Master's,13.0,140000.0,27,16,9,1,Senior,People & Support,Management
+28.0,Male,Bachelor's,2.0,40000.0,30,10,12,0,Junior,Finance & Operations,Analysis
+46.0,Male,PhD,18.0,160000.0,28,12,18,0,Senior,Software/data,Analysis
+33.0,Female,Bachelor's,5.0,70000.0,30,14,13,0,Junior,Finance & Operations,Management
+37.0,Male,Master's,9.0,120000.0,27,14,15,2,Senior,Software/data,Engineer
+51.0,Female,Master's,21.0,190000.0,27,9,7,1,Director,People & Support,Leadership
+30.0,Male,Bachelor's,3.0,45000.0,27,14,6,1,Junior,Sales & Marketing,Support
+43.0,Male,Bachelor's,15.0,120000.0,32,14,14,0,Senior,Management,Management
+27.0,Female,Master's,1.5,50000.0,26,8,10,1,Junior,Other,Analysis
+35.0,Male,Bachelor's,8.0,85000.0,29,18,16,2,Senior,Finance & Operations,Analysis
+42.0,Female,PhD,13.0,140000.0,34,11,8,0,Senior,Sales & Marketing,Management
+37.0,Female,Bachelor's,9.0,100000.0,28,13,18,0,Senior,Finance & Operations,Analysis
+45.0,Male,Master's,16.0,140000.0,27,13,16,3,Senior,Software/data,Engineer
+33.0,Female,Bachelor's,5.0,70000.0,28,13,8,2,Junior,Finance & Operations,Analysis
+39.0,Male,Bachelor's,10.0,120000.0,31,15,10,1,Senior,Sales & Marketing,Support
+44.0,Female,PhD,18.0,160000.0,36,11,11,0,Senior,People & Support,Management
+29.0,Male,Bachelor's,1.5,40000.0,26,15,12,3,Junior,Business,Analysis
+38.0,Female,Bachelor's,10.0,120000.0,40,13,6,0,Senior,Product & Design,Management
+46.0,Male,PhD,19.0,150000.0,33,14,12,1,Senior,Software/data,Analysis
+34.0,Female,Bachelor's,6.0,70000.0,39,12,11,2,Junior,Sales & Marketing,Analysis
+36.0,Male,Bachelor's,8.0,95000.0,28,19,9,2,Senior,Finance & Operations,Management
+49.0,Female,Master's,21.0,180000.0,26,15,9,1,Director,Sales & Marketing,Leadership
+31.0,Male,Bachelor's,3.0,50000.0,31,14,12,1,Junior,Finance & Operations,Analysis
+41.0,Female,Bachelor's,11.0,95000.0,29,13,11,2,Senior,Management,Support
+47.0,Male,Master's,20.0,170000.0,32,13,12,1,Director,Finance & Operations,Leadership
+30.0,Female,Bachelor's,2.0,40000.0,25,11,5,2,Junior,Sales & Marketing,Support
+38.0,Male,Master's,9.0,110000.0,28,15,15,0,Senior,Business,Individual Contributor
+45.0,Female,PhD,15.0,150000.0,29,16,12,1,Senior,Product & Design,Creative
+28.0,Male,Bachelor's,2.0,40000.0,30,15,9,2,Junior,Business,Individual Contributor
+35.0,Female,Bachelor's,8.0,85000.0,35,13,12,1,Senior,Sales & Marketing,Analysis
+44.0,Male,Bachelor's,14.0,130000.0,34,9,13,0,Senior,Software/data,Engineer
+34.0,Female,Master's,6.0,100000.0,28,19,17,1,Senior,Finance & Operations,Individual Contributor
+35.0,Male,Bachelor's,9.0,95000.0,31,11,8,1,Senior,Management,Support
+50.0,Female,PhD,22.0,180000.0,32,12,12,1,Senior,Finance & Operations,Leadership
+29.0,Male,Bachelor's,1.5,350.0,21,15,7,3,Junior,Business,Analysis
+37.0,Female,Bachelor's,10.0,120000.0,29,13,16,0,Senior,Finance & Operations,Management
+46.0,Male,PhD,18.0,160000.0,30,15,13,0,Senior,Software/data,Analysis
+31.0,Female,Bachelor's,3.0,50000.0,34,12,9,3,Junior,Sales & Marketing,Support
+42.0,Male,Bachelor's,12.0,110000.0,25,16,7,1,Senior,Finance & Operations,Management
+29.0,Female,Bachelor's,1.5,40000.0,26,16,10,1,Junior,Sales & Marketing,Individual Contributor
+36.0,Male,Bachelor's,8.0,95000.0,31,14,11,0,Senior,Sales & Marketing,Support
+44.0,Female,Master's,15.0,140000.0,38,12,11,2,Senior,People & Support,Support
+33.0,Male,Bachelor's,4.0,60000.0,20,11,8,0,Junior,Finance & Operations,Management
+39.0,Female,Bachelor's,9.0,110000.0,33,14,10,1,Senior,Sales & Marketing,Support
+45.0,Male,PhD,16.0,150000.0,34,15,8,0,Senior,Software/data,Engineer
+32.0,Female,Bachelor's,4.0,60000.0,31,10,11,1,Junior,Sales & Marketing,Management
+37.0,Male,Bachelor's,8.0,90000.0,29,17,17,0,Senior,Finance & Operations,Analysis
+47.0,Female,Master's,20.0,180000.0,25,14,7,7,Director,Sales & Marketing,Other
+30.0,Male,Bachelor's,2.0,40000.0,21,9,3,0,Junior,Business,Analysis
+38.0,Female,Bachelor's,9.0,120000.0,29,13,14,1,Senior,Management,Management
+46.0,Male,PhD,17.0,160000.0,38,9,14,0,Senior,Software/data,Analysis
+34.0,Female,Bachelor's,5.0,70000.0,31,12,16,1,Junior,Finance & Operations,Analysis
+36.0,Male,Bachelor's,8.0,95000.0,27,10,4,1,Senior,Product & Design,Management
+49.0,Female,Master's,21.0,180000.0,25,16,11,2,Director,Finance & Operations,Leadership
+31.0,Male,Bachelor's,3.0,50000.0,26,16,12,1,Junior,Finance & Operations,Analysis
+41.0,Female,Bachelor's,11.0,95000.0,26,16,8,2,Senior,Management,Support
+47.0,Male,Master's,19.0,170000.0,34,12,15,1,Senior,Sales & Marketing,Leadership
+29.0,Female,Bachelor's,1.5,35000.0,31,12,9,2,Junior,Business,Individual Contributor
+35.0,Male,Bachelor's,9.0,100000.0,30,14,12,0,Senior,Finance & Operations,Management
+44.0,Female,PhD,15.0,150000.0,37,14,10,0,Senior,Product & Design,Creative
+33.0,Male,Bachelor's,4.0,60000.0,24,11,11,1,Junior,Business,Analysis
+35.0,Female,Bachelor's,8.0,85000.0,38,13,11,1,Senior,Sales & Marketing,Analysis
+44.0,Male,Bachelor's,13.0,130000.0,31,11,12,0,Senior,Software/data,Engineer
+32.0,Male,Bachelor's,4.0,65000.0,29,9,10,1,Junior,Product & Design,Management
+38.0,Female,Bachelor's,10.0,110000.0,32,16,14,0,Senior,Business,Analysis
+49.0,Male,PhD,21.0,180000.0,26,17,15,0,Director,Finance & Operations,Leadership
+29.0,Female,Bachelor's,2.0,40000.0,29,15,5,1,Junior,Sales & Marketing,Support
+35.0,Male,Bachelor's,7.0,90000.0,32,14,10,1,Senior,Business,Management
+45.0,Female,Master's,14.0,140000.0,30,13,11,0,Senior,People & Support,Management
+33.0,Male,Bachelor's,4.0,60000.0,27,13,13,0,Junior,Finance & Operations,Analysis
+40.0,Female,Bachelor's,12.0,130000.0,33,19,8,1,Senior,Sales & Marketing,Management
+44.0,Male,PhD,16.0,160000.0,30,17,17,0,Senior,Software/data,Analysis
+30.0,Female,Bachelor's,2.0,40000.0,25,13,11,3,Junior,Finance & Operations,Support
+37.0,Male,Bachelor's,9.0,100000.0,32,12,16,0,Senior,Sales & Marketing,Analysis
+48.0,Female,Master's,20.0,180000.0,32,11,10,1,Director,People & Support,Support
+31.0,Male,Bachelor's,3.0,55000.0,28,9,8,1,Junior,Other,Management
+38.0,Female,Bachelor's,9.0,120000.0,31,15,6,0,Senior,Finance & Operations,Support
+45.0,Male,PhD,16.0,150000.0,30,15,16,1,Senior,Software/data,Engineer
+33.0,Female,Bachelor's,5.0,70000.0,30,16,11,2,Junior,Sales & Marketing,Management
+36.0,Male,Bachelor's,8.0,95000.0,32,14,15,2,Senior,Business,Analysis
+49.0,Female,Master's,21.0,180000.0,27,14,12,1,Director,Sales & Marketing,Other
+31.0,Male,Bachelor's,3.0,50000.0,24,15,9,2,Junior,Finance & Operations,Analysis
+42.0,Female,Bachelor's,12.0,120000.0,28,16,10,0,Senior,Management,Management
+47.0,Male,Master's,19.0,170000.0,29,16,7,2,Senior,Sales & Marketing,Leadership
+29.0,Female,Bachelor's,1.5,35000.0,21,10,6,1,Junior,Business,Individual Contributor
+35.0,Male,Bachelor's,9.0,100000.0,22,10,15,0,Senior,Finance & Operations,Management
+44.0,Female,PhD,15.0,150000.0,30,14,12,1,Senior,Product & Design,Creative
+33.0,Male,Bachelor's,4.0,60000.0,23,10,6,1,Junior,Business,Analysis
+35.0,Female,Bachelor's,8.0,85000.0,37,20,7,1,Senior,Sales & Marketing,Analysis
+34.0,Female,Master's,6.0,80000.0,30,12,17,0,Senior,Finance & Operations,Individual Contributor
+36.0,Male,Bachelor's,8.0,95000.0,32,16,14,2,Senior,Sales & Marketing,Support
+30.0,Female,Bachelor's,2.0,40000.0,39,15,7,1,Junior,People & Support,Support
+37.0,Male,Bachelor's,10.0,120000.0,27,13,8,1,Senior,Business,Management
+45.0,Female,Master's,16.0,160000.0,34,9,12,1,Senior,Sales & Marketing,Management
+32.0,Male,Bachelor's,4.0,65000.0,29,12,7,0,Junior,Finance & Operations,Individual Contributor
+39.0,Female,Bachelor's,12.0,130000.0,25,13,13,1,Senior,Management,Management
+47.0,Male,PhD,20.0,180000.0,27,11,6,2,Director,Software/data,Engineer
+29.0,Female,Bachelor's,2.0,40000.0,38,12,6,0,Junior,Sales & Marketing,Analysis
+36.0,Male,Bachelor's,9.0,100000.0,30,13,9,1,Senior,Finance & Operations,Management
+43.0,Female,PhD,15.0,150000.0,36,10,19,0,Senior,Software/data,Analysis
+32.0,Male,Bachelor's,3.0,55000.0,23,16,4,1,Junior,Sales & Marketing,Support
+38.0,Female,Bachelor's,10.0,110000.0,40,14,12,0,Senior,Business,Analysis
+48.0,Male,Master's,21.0,180000.0,28,11,8,2,Director,Sales & Marketing,Other
+31.0,Female,Bachelor's,3.0,50000.0,32,14,8,2,Junior,Business,Individual Contributor
+40.0,Male,Bachelor's,12.0,130000.0,27,18,14,1,Senior,Finance & Operations,Analysis
+45.0,Female,PhD,16.0,160000.0,34,13,15,1,Senior,Software/data,Creative
+33.0,Male,Bachelor's,4.0,60000.0,26,14,11,2,Junior,Product & Design,Management
+36.0,Female,Bachelor's,8.0,95000.0,31,15,11,1,Senior,Sales & Marketing,Management
+47.0,Male,Master's,19.0,170000.0,29,14,11,1,Director,Finance & Operations,Leadership
+29.0,Female,Bachelor's,2.0,40000.0,26,15,7,2,Junior,Other,Management
+34.0,Male,Bachelor's,7.0,90000.0,25,11,11,0,Senior,Finance & Operations,Support
+44.0,Female,PhD,15.0,150000.0,31,13,12,1,Senior,Business,Analysis
+33.0,Male,Bachelor's,5.0,70000.0,35,12,8,2,Junior,Sales & Marketing,Support
+35.0,Female,Bachelor's,8.0,90000.0,30,16,14,1,Senior,Finance & Operations,Management
+43.0,Male,Master's,18.0,170000.0,26,9,8,4,Director,Sales & Marketing,Other
+31.0,Female,Bachelor's,3.0,50000.0,28,12,16,0,Junior,Finance & Operations,Analysis
+41.0,Male,Bachelor's,14.0,150000.0,35,15,13,1,Senior,Product & Design,Management
+44.0,Female,PhD,16.0,160000.0,35,14,10,1,Senior,Software/data,Engineer
+33.0,Male,Bachelor's,4.0,60000.0,34,15,12,1,Junior,Business,Analysis
+35.0,Female,Bachelor's,8.0,85000.0,37,14,10,1,Senior,Sales & Marketing,Analysis
+45.0,Male,Master's,19.0,180000.0,25,13,12,1,Director,Software/data,Engineer
+28.0,Female,Bachelor's,1.0,35000.0,24,14,9,4,Junior,Finance & Operations,Management
+36.0,Male,Bachelor's,8.0,110000.0,18,7,5,2,Senior,Business,Management
+44.0,Female,PhD,16.0,160000.0,33,11,11,1,Senior,Software/data,Analysis
+31.0,Male,Bachelor's,3.0,55000.0,28,11,6,1,Junior,Sales & Marketing,Support
+38.0,Female,Bachelor's,10.0,110000.0,28,16,12,1,Senior,Business,Analysis
+48.0,Male,Master's,21.0,180000.0,30,13,6,3,Director,Sales & Marketing,Other
+31.0,Female,Bachelor's,3.0,50000.0,28,15,6,2,Junior,Business,Individual Contributor
+40.0,Male,Bachelor's,12.0,130000.0,21,8,12,0,Senior,Finance & Operations,Analysis
+45.0,Female,PhD,16.0,160000.0,36,15,13,1,Senior,Software/data,Creative
+33.0,Male,Bachelor's,4.0,60000.0,35,14,9,1,Junior,Product & Design,Management
+36.0,Female,Bachelor's,8.0,95000.0,29,17,9,1,Senior,Sales & Marketing,Management
+47.0,Male,Master's,19.0,170000.0,32,18,7,2,Director,Finance & Operations,Leadership
+29.0,Female,Bachelor's,2.0,40000.0,26,13,9,3,Junior,Other,Management
+34.0,Male,Bachelor's,7.0,90000.0,29,15,15,1,Senior,Finance & Operations,Support
+44.0,Female,PhD,15.0,150000.0,33,13,9,1,Senior,Business,Analysis
+33.0,Male,Bachelor's,5.0,70000.0,28,18,6,3,Junior,Sales & Marketing,Support
+35.0,Female,Bachelor's,8.0,90000.0,27,14,12,1,Senior,Finance & Operations,Management
+43.0,Male,Master's,18.0,170000.0,31,10,5,2,Director,Sales & Marketing,Other
+31.0,Female,Bachelor's,3.0,50000.0,25,12,11,1,Junior,Finance & Operations,Analysis
+41.0,Male,Bachelor's,14.0,150000.0,21,11,7,2,Senior,Product & Design,Management
+44.0,Female,PhD,16.0,160000.0,29,9,14,1,Senior,Software/data,Engineer
+33.0,Male,Bachelor's,4.0,60000.0,33,12,11,0,Junior,Business,Analysis
+35.0,Female,Bachelor's,8.0,85000.0,33,14,14,0,Senior,Sales & Marketing,Analysis
+43.0,Male,Master's,19.0,170000.0,27,13,12,2,Director,Finance & Operations,Leadership
+29.0,Female,Bachelor's,2.0,40000.0,31,12,5,2,Junior,Other,Management
+34.0,Male,Bachelor's,7.0,90000.0,22,10,6,0,Senior,Finance & Operations,Support
+44.0,Female,PhD,15.0,150000.0,33,16,11,1,Senior,Business,Analysis

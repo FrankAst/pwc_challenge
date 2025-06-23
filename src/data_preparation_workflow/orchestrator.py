@@ -1,7 +1,27 @@
 import logging
-from .load_and_merge import *
-from .FE_text import *
-from ..utils import remove_nulls
+import sys
+import os
+
+# Add the parent directories to the Python path when running directly
+if __name__ == "__main__":
+    # Add the src directory to the path
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    src_dir = os.path.dirname(current_dir)
+    project_root = os.path.dirname(src_dir)
+    sys.path.insert(0, src_dir)
+    sys.path.insert(0, project_root)
+
+# Now we can use absolute imports
+try:
+    # Try relative imports first (when imported as part of package)
+    from .load_and_merge import *
+    from .FE_text import *
+    from ..utils import remove_nulls
+except ImportError:
+    # Fall back to absolute imports (when running directly)
+    from load_and_merge import *
+    from FE_text import *
+    from utils import remove_nulls
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -66,7 +86,7 @@ def main():
         
         # Drop unnecessary columns
         logger.info("Dropping unnecessary columns: id, Job title and Description...\n")
-        df.drop(columns=['id','Job title', 'Description'], inplace=True)
+        df.drop(columns=['id','Job Title', 'Description'], inplace=True)
         
         # Save the final DataFrame to a CSV file
         output_path = 'data/cleaned_data/final_dataset.csv'

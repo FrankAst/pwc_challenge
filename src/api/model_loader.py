@@ -135,8 +135,8 @@ class ModelLoader:
                 
                 # Get additional info if available
                 extra_info = {}
-                if hasattr(model, 'get_training_metrics'):
-                    extra_info['training_metrics'] = model.get_training_metrics()
+                if hasattr(model, 'get_model_metrics'):
+                    extra_info['model_metrics'] = model.get_model_metrics()
                 
                 return {
                     "predicted_salary": predicted_salary,

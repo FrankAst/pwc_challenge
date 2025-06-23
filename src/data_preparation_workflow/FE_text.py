@@ -300,15 +300,19 @@ def aggregate_categories(value, category_type):
     
     elif category_type == 'role':
         mapping = {
-            'Leadership': ['Director', 'VP', 'Executive', 'CEO', 'Officer', 'Technology Officer'],
+            
+            'TopExecs': ['CEO', 'CFO', 'COO', 'CTO', 'CIO', 'President', 'Vice President', 'VP', 'Executive Vice President', 
+                        'Senior Vice President', 'Chief Executive Officer',],
+            
+            'Leadership': ['Director', 'Executive', 'Technology Officer'],
             
             'Management': ['Manager', 'Operations Manager', 'Product Manager', 'Project Manager', 
-                          'Account Manager', 'Product Marketing Manager', 'Product Management', 'Architect'],
+                          'Account Manager', 'Product Marketing Manager', 'Product Management'],
             
             'Analysis': ['Analyst', 'Business Analyst', 'Data Scientist', 'Scientist', 'Researcher', 
                         'Quality Assurance Analyst'],
             
-            'Engineer': ['Engineer', 'Developer', 'Engineering'],
+            'Engineer': ['Engineer', 'Developer', 'Engineering', 'Architect'],
             
             'Support': ['Coordinator', 'Specialist', 'Support Specialist', 'Assistant', 'Support', 
                        'Clerk', 'HR'],
@@ -317,9 +321,7 @@ def aggregate_categories(value, category_type):
                                       'Accountant', 'Consultant', 'Advisor', 'Account Executive'],
             
             'Creative': ['Designer', 'Product Designer', 'Graphic Designer', 'Copywriter', 'Writer', 
-                        'Producer'],
-            
-            'Sales/Marketing': ['Marketing', 'Sales']
+                        'Producer']
         }
     
     else:
