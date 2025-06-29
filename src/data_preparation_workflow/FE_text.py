@@ -186,10 +186,44 @@ def extract_job_title_info(row):
     JOB TITLE: {job_title}
     YEARS OF EXPERIENCE: {years_exp}
 
-    CRITICAL INSTRUCTIONS:
+    CRITICAL VALIDATION RULES:
+    - The job title MUST be a realistic, professional job position that exists in the real world
+    - If the job title is fake, exaggerated, nonsensical, or contains inappropriate content, return null for ALL fields
+    - Do NOT extract from obviously fake titles like "CEO of World", "King of Universe", "Supreme Leader", etc.
+    - Do NOT extract from titles with excessive punctuation, all caps, or unprofessional language
+    - Do NOT extract from gibberish, random characters, or made-up words
+    - Do NOT extract from titles that are clear references to FANTASY characters. ()
+    
+    EXAMPLES OF INVALID JOB TITLES (return null for all fields):
+    - "jajasjkdkasdjkaj" 
+    - "CEO OF WORLD!"
+    - "King of Universe"
+    - "Supreme Leader"
+    - "Data Wizard"
+    - "Superhero"
+    - "Master of Everything"
+    - "God of Code"
+    - "Emperor of Sales"
+    - "Ninja Developer"
+    - "Rock Star Engineer"
+    - "Unicorn Designer"
+    - "asdfghjkl"
+    - "123456"
+    - "!!!MANAGER!!!"
+    - "CEO OF EVERYTHING"
+    
+    EXAMPLES OF VALID JOB TITLES:
+    - "CEO" (real executive role)
+    - "Data Engineer"
+    - "Software Developer" 
+    - "Marketing Manager"
+    - "Product Manager"
+    - "Senior Consultant"
+    - "Director of Sales"
+    - "Chief Technology Officer"
+
+    EXTRACTION RULES (only if job title is valid):
     - Return raw JSON only, no ```json``` blocks
-    - If information is NOT FOUND, return null for that field
-    - Do NOT guess or make up information
     - Only extract information that is explicitly stated
     
     SENIORITY RULES:
@@ -201,21 +235,14 @@ def extract_job_title_info(row):
     - Try to group similar areas together (e.g., "Software Engineering" and "Software Development" as "Software/IT")
     - Avoid being too specific, use broader categories when possible (e.g., "Consulting" instead of "Management Consulting")
     - Data analysts and data scientists should be grouped under "Data Science"
-
-    Example inputs:
+    
+    Example outputs:
     - "CEO" -> {{"seniority": "C-level", "area": "Executive", "role": "CEO"}}
     - "Recruiter" -> {{"seniority": "rule_based", "area": "Human Resources", "role": "Recruiter"}}
     - "Senior Consultant" -> {{"seniority": "Senior", "area": "Consulting", "role": "Consultant"}}
     - "Data Scientist" -> {{"seniority": "rule_based", "area": "Data Science", "role": "Scientist"}}
     - "Software Engineer" -> {{"seniority": "rule_based", "area": "Software/IT", "role": "Engineer"}}
-    - "Junior Business Development Associate" -> {{"seniority": "Junior", "area": "Business Development", "role": "Associate"}}
-    - "Senior IT Project Manager" -> {{"seniority": "Senior", "area": "Software/IT", "role": "Project Manager"}}
-    - "Director of Warehouse and Distribution" -> {{"seniority": "Director", "area": "Operations", "role": "Director"}}
-    
-    EXAMPLE OUTPUTS:
-    {{"seniority": "Senior", "area": "Software/IT", "role": "Engineer"}}
-    {{"seniority": "rule_based", "area": "Data Science", "role": "Scientist"}}
-    {{"seniority": "rule_based", "area": "Marketing", "role": "Manager"}}
+    - "jajasjkdkasdjkaj" -> {{"seniority": null, "area": null, "role": null}}
 
     JSON:"""
 
@@ -239,6 +266,34 @@ def extract_job_title_info(row):
         # Parse JSON response
         result = json.loads(response_text)
         
+        # Additional validation - check for obvious fake patterns
+        job_title_upper = job_title.upper()
+        fake_patterns = [
+            'OF WORLD', 'OF UNIVERSE', 'OF EVERYTHING', 'SUPREME', 'MASTER OF', 
+            'GOD OF', 'KING', 'EMPEROR', 'WIZARD', 'NINJA', 'ROCK STAR',
+            'UNICORN', '!!!', 'CEO OF', 'PRESIDENT OF THE WORLD', 'ORC', 'ELF', 'DRAGON'
+        ]
+        
+        is_fake = any(pattern in job_title_upper for pattern in fake_patterns)
+        
+        # Check for excessive punctuation or all caps (except normal acronyms)
+        has_excessive_punctuation = job_title.count('!') > 1 or job_title.count('?') > 0
+        is_all_caps_fake = job_title.isupper() and len(job_title) > 5 and not job_title.replace(' ', '').isalpha()
+        
+        # Validate that we got meaningful results
+        area = result.get('area', None)
+        role = result.get('role', None)
+        
+        # If both area and role are null, or if we detected fake patterns, the job title is invalid
+        if (area is None and role is None) or is_fake or has_excessive_punctuation or is_all_caps_fake:
+            # Return the original row but add a validation error flag
+            updated_row = row.copy()
+            updated_row['Seniority'] = None
+            updated_row['Area'] = None
+            updated_row['Role'] = None
+            updated_row['_validation_error'] = f"Invalid job title: '{job_title}'"
+            return updated_row
+        
         # Handle rule-based seniority determination
         if result.get('seniority') == 'rule_based':
             if pd.notna(years_exp):
@@ -254,8 +309,8 @@ def extract_job_title_info(row):
         # Update row with extracted values
         updated_row = row.copy()
         updated_row['Seniority'] = result.get('seniority', None)
-        updated_row['Area'] = result.get('area', None)
-        updated_row['Role'] = result.get('role', None)
+        updated_row['Area'] = area
+        updated_row['Role'] = role
         
         return updated_row
         
@@ -359,5 +414,4 @@ def apply_job_title_extraction(df):
     return df
 
 
-    
-    
+

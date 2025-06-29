@@ -14,11 +14,12 @@ from datetime import datetime
 import logging
 from typing import Optional, Dict, Any
 from contextlib import asynccontextmanager
+import pandas as pd
 
 # Import from your existing model_loader and config
 from model_loader import get_model_loader, reload_models
 from src.config import CATEGORICAL_FEATURES, NUMERICAL_FEATURES, TARGET_COLUMN
-from src.data_preparation_workflow.FE_text import aggregate_categories
+from src.data_preparation_workflow.FE_text import aggregate_categories, extract_job_title_info
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -47,39 +48,15 @@ async def lifespan(app: FastAPI):
     # Shutdown (if needed)
     logger.info("🛑 Shutting down Salary Prediction API")
 
-def validate_and_standardize_input(input_data: dict) -> dict:
-    """
-    Validate and standardize input data using your aggregate_categories function.
-    This ensures the input matches the categories your models were trained on.
-    """
-    validated_data = input_data.copy()
-    
-    # Standardize area and role using your FE_text function
-    if 'area' in validated_data:
-        original_area = validated_data['area']
-        validated_data['area'] = aggregate_categories(original_area, 'area')
-        if original_area != validated_data['area']:
-            logger.info(f"📝 Standardized area: '{original_area}' → '{validated_data['area']}'")
-    
-    if 'role' in validated_data:
-        original_role = validated_data['role']
-        validated_data['role'] = aggregate_categories(original_role, 'role')
-        if original_role != validated_data['role']:
-            logger.info(f"📝 Standardized role: '{original_role}' → '{validated_data['role']}'")
-    
-    return validated_data
-
 # Pydantic models for API
 class PredictionInput(BaseModel):
-    """Input model with validation matching your config. 
-    Note: 'area' and 'role' values will be automatically standardized using aggregate_categories."""
+    """Input model with validation matching your config."""
     age: float = Field(..., ge=16, le=100, description="Age in years (16-100)")
     gender: str = Field(..., description="Gender")
     education_level: str = Field(..., description="Education level")
     years_of_experience: float = Field(..., ge=0, le=60, description="Years of experience (0-50)")
     seniority: str = Field(..., description="Seniority level")
-    area: str = Field(..., description="Business area (will be standardized to trained categories)")
-    role: str = Field(..., description="Job role (will be standardized to trained categories)")
+    job_title: str = Field(..., description="Job title to extract area and role from")
     
     class Config:
         json_schema_extra = {
@@ -89,8 +66,7 @@ class PredictionInput(BaseModel):
                 "education_level": "Bachelor's",
                 "years_of_experience": 5.0,
                 "seniority": "Junior",
-                "area": "Engineering",  # Will be standardized to "Software/data"
-                "role": "Software Engineer"  # Will be standardized to "Engineer"
+                "job_title": "Data Engineer"
             }
         }
 
@@ -263,7 +239,7 @@ def predict_salary(input_data: PredictionInput):
 @app.post("/predict/{model_name}", response_model=PredictionOutput)  
 def predict_with_model(model_name: str, input_data: PredictionInput):
     """Make salary prediction using a specific model."""
-    logger.info(f"🔮 Prediction request: {input_data.role} in {input_data.area} using {model_name}")
+    logger.info(f"🔮 Prediction request for '{input_data.seniority} {input_data.job_title}' using {model_name}")
     
     try:
         model_loader = get_model_loader()
@@ -276,12 +252,35 @@ def predict_with_model(model_name: str, input_data: PredictionInput):
                 detail=f"Model '{model_name}' not found. Available models: {available_models}"
             )
         
-        # Convert Pydantic input to dictionary and validate/standardize
+        # Extract area and role from job title
+        row_data = {
+            'Job Title': input_data.job_title,
+            'Years of Experience': input_data.years_of_experience
+        }
+        row_series = pd.Series(row_data)
+        extracted_row = extract_job_title_info(row_series)
+        
+        # Check if job title validation failed
+        if '_validation_error' in extracted_row:
+            error_message = extracted_row['_validation_error']
+            logger.warning(f"❌ Job title validation failed: {error_message}")
+            raise HTTPException(status_code=400, detail=f"Invalid job title: Please enter a real job title (e.g., 'Data Engineer', 'Product Manager', 'Software Developer')")
+        
+        # Get extracted and standardized values
+        raw_area = extracted_row.get('Area', 'Other')
+        raw_role = extracted_row.get('Role', 'Other')
+        standardized_area = aggregate_categories(raw_area, 'area')
+        standardized_role = aggregate_categories(raw_role, 'role')
+        
+        # Convert Pydantic input to dictionary and add extracted area/role
         input_dict = input_data.dict()
-        validated_input = validate_and_standardize_input(input_dict)
+        input_dict['area'] = standardized_area
+        input_dict['role'] = standardized_role
+        
+        logger.info(f"📝 Extracted: '{input_data.job_title}' → area: '{standardized_area}', role: '{standardized_role}'")
         
         # Use your model loader's predict method
-        result = model_loader.predict(model_name, validated_input)
+        result = model_loader.predict(model_name, input_dict)
         
         # Extract prediction from result
         predicted_salary = result.get('predicted_salary')
@@ -304,10 +303,17 @@ def predict_with_model(model_name: str, input_data: PredictionInput):
                     "MAE": model_metrics.get('MAE', {}), 
                     "R2": model_metrics.get('R2', {})
                 },
+                "extracted_job_info": {
+                    "job_title": input_data.job_title,
+                    "extracted_area": raw_area,
+                    "extracted_role": raw_role,
+                    "standardized_area": standardized_area,
+                    "standardized_role": standardized_role
+                },
                 "input_format": result.get('input_format', 'enhanced_api_compatible'),
                 "success": result.get('success', True),
                 "input_validated": True,
-                "note": "Prediction from trained model with performance metrics"
+                "note": "Prediction from trained model with automatic job title extraction"
             }
         )
         
@@ -413,6 +419,50 @@ def debug_info():
             "target": TARGET_COLUMN
         }
     }
+
+@app.post("/extract-job-title")
+def extract_job_title_endpoint(input_data: PredictionInput):
+    """Extract area and role from a job title string."""
+    if not input_data.job_title:
+        raise HTTPException(status_code=400, detail="job_title field is required")
+        
+    logger.info(f"🔍 Job title extraction request: '{input_data.job_title}'")
+    
+    try:
+        # Create a minimal row with just the required fields for extraction
+        row_data = {
+            'Job Title': input_data.job_title,
+            'Years of Experience': input_data.years_of_experience
+        }
+        
+        # Convert to pandas Series (what extract_job_title_info expects)
+        row_series = pd.Series(row_data)
+        
+        # Extract job title information using your existing function
+        extracted_row = extract_job_title_info(row_series)
+        
+        # Get the extracted values (we only care about area and role)
+        raw_area = extracted_row.get('Area', 'Other')
+        raw_role = extracted_row.get('Role', 'Other')
+        
+        # Standardize using your aggregate_categories function
+        standardized_area = aggregate_categories(raw_area, 'area')
+        standardized_role = aggregate_categories(raw_role, 'role')
+        
+        response = {
+            "area": raw_area or 'Other',
+            "role": raw_role or 'Other',
+            "standardized_area": standardized_area,
+            "standardized_role": standardized_role,
+            "timestamp": datetime.utcnow().isoformat()
+        }
+        
+        logger.info(f"✅ Extraction successful: {raw_area} → {standardized_area}, {raw_role} → {standardized_role}")
+        return response
+        
+    except Exception as e:
+        logger.error(f"❌ Job title extraction failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Job title extraction failed: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn

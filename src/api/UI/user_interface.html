@@ -370,34 +370,9 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="area">Business Area:</label>
-                            <select id="area" name="area" required>
-                                <option value="">Select Area</option>
-                                <option value="Software/data">Software/Data</option>
-                                <option value="Sales & Marketing">Sales & Marketing</option>
-                                <option value="Finance & Operations">Finance & Operations</option>
-                                <option value="Product & Design">Product & Design</option>
-                                <option value="People & Support">People & Support</option>
-                                <option value="Business">Business</option>
-                                <option value="Management">Management</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <div class="error-message" id="areaError"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="role">Job Role:</label>
-                            <select id="role" name="role" required>
-                                <option value="">Select Role</option>
-                                <option value="Engineer">Engineer</option>
-                                <option value="Analysis">Analysis</option>
-                                <option value="Management">Management</option>
-                                <option value="Individual Contributor">Individual Contributor</option>
-                                <option value="Leadership">Leadership</option>
-                                <option value="Support">Support</option>
-                                <option value="Creative">Creative</option>
-                            </select>
-                            <div class="error-message" id="roleError"></div>
+                            <label for="jobTitle">Job Title:</label>
+                            <input type="text" id="jobTitle" name="job_title" placeholder="e.g. Data Engineer, Product Manager, Software Developer" required>
+                            <div class="error-message" id="jobTitleError"></div>
                         </div>
                     </div>
                     
@@ -641,8 +616,7 @@
                 education_level: formData.get('education_level'),
                 years_of_experience: parseFloat(formData.get('years_of_experience')),
                 seniority: formData.get('seniority'),
-                area: formData.get('area'),
-                role: formData.get('role')
+                job_title: formData.get('job_title')
             };
             
             // Disable button and show loading
@@ -694,7 +668,7 @@
             predictionDetails.innerHTML = `
                 <strong>Model:</strong> ${result.model_used}<br>
                 <strong>Input:</strong> ${inputData.age}yr ${inputData.gender}, ${inputData.education_level}, ${inputData.years_of_experience}yr exp<br>
-                <strong>Role:</strong> ${inputData.seniority} ${inputData.role} in ${inputData.area}<br>
+                <strong>Role:</strong> ${inputData.seniority} ${inputData.job_title}<br>
                 <strong>Timestamp:</strong> ${new Date(result.timestamp).toLocaleString()}
             `;
             
@@ -734,7 +708,7 @@
                 isValid = false;
             }
             
-            const requiredFields = ['gender', 'education', 'seniority', 'area', 'role'];
+            const requiredFields = ['gender', 'education', 'seniority', 'jobTitle'];
             requiredFields.forEach(field => {
                 const element = document.getElementById(field);
                 if (!element.value) {
