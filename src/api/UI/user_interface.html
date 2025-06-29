@@ -571,23 +571,41 @@
                 <p><strong>Created:</strong> ${modelData.created_at}</p>
             `;
             
-            // Model metrics
+            // Model metrics - Fix the property name (remove underscore)
             modelMetrics.innerHTML = '';
-            const metrics = modelData.model_metrics_ || {};
+            const metrics = modelData.model_metrics || {};
             
             if (Object.keys(metrics).length > 0) {
-                Object.entries(metrics).forEach(([key, value]) => {
+                Object.entries(metrics).forEach(([key, metricData]) => {
                     const metricDiv = document.createElement('div');
                     metricDiv.className = 'metric-item';
                     
-                    let displayValue = value;
-                    if (typeof value === 'number') {
-                        displayValue = value.toFixed(4);
+                    // Handle the new structure with value and confidence_interval
+                    let displayValue = metricData;
+                    let displayCI = '';
+                    
+                    if (typeof metricData === 'object' && metricData.value !== undefined) {
+                        displayValue = metricData.value;
+                        if (metricData.confidence_interval) {
+                            displayCI = `<div style="font-size: 0.75rem; color: #718096; margin-top: 2px;">CI: ${metricData.confidence_interval}</div>`;
+                        }
+                        
+                        // Format numbers nicely
+                        if (typeof displayValue === 'number') {
+                            if (key === 'R2') {
+                                displayValue = displayValue.toFixed(3);
+                            } else {
+                                displayValue = displayValue.toLocaleString('en-US', {maximumFractionDigits: 0});
+                            }
+                        }
+                    } else if (typeof metricData === 'number') {
+                        displayValue = metricData.toFixed(4);
                     }
                     
                     metricDiv.innerHTML = `
-                        <div class="metric-label">${key.replace(/_/g, ' ')}</div>
+                        <div class="metric-label">${key}</div>
                         <div class="metric-value">${displayValue}</div>
+                        ${displayCI}
                     `;
                     modelMetrics.appendChild(metricDiv);
                 });

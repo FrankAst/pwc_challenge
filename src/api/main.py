@@ -192,7 +192,7 @@ def list_models():
                 "status": "available" if model_info.get('is_fitted', False) else "not_fitted",
                 "description": f"{model_info.get('model_class', 'Model')} for salary prediction",
                 "feature_count": model_info.get('feature_count', 0),
-                "training_metrics": model_info.get('training_metrics', {}),
+                "model_metrics": model_info.get('model_metrics', {}),
                 "created_at": model_info.get('created_at', 'Unknown'),
                 "supports_api": model_info.get('supports_api', True)
             })
@@ -232,7 +232,7 @@ def get_model_info(model_name: str):
             "feature_names": model_info.get('feature_names', []),
             "feature_count": model_info.get('feature_count', 0),
             "target_name": model_info.get('target_name', TARGET_COLUMN),
-            "training_metrics": model_info.get('training_metrics', {}),
+            "model_metrics": model_info.get('model_metrics', {}),
             "model_params": model_info.get('model_params', {}),
             "supports_predict": model_info.get('supports_predict', False),
             "supports_api": model_info.get('supports_api', False)
@@ -288,25 +288,31 @@ def predict_with_model(model_name: str, input_data: PredictionInput):
         if predicted_salary is None:
             raise ValueError("Model prediction returned no salary value")
         
-        # Get model info for confidence information
-        model_info = model_loader.get_model_info(model_name)
+        # Get model metrics directly from the result
+        model_metrics = result.get('model_metrics', {})
         
-        # Create response
+        # Create response with metrics prominently displayed
         response = PredictionOutput(
             predicted_salary=round(float(predicted_salary), 2),
             model_used=model_name,
             timestamp=datetime.utcnow().isoformat(),
             confidence_info={
                 "model_type": result.get('model_type', 'Unknown'),
-                "training_metrics": result.get('training_metrics', {}),
+                "model_metrics": model_metrics,  # Include metrics here for visibility
+                "performance": {
+                    "RMSE": model_metrics.get('RMSE', {}),
+                    "MAE": model_metrics.get('MAE', {}), 
+                    "R2": model_metrics.get('R2', {})
+                },
                 "input_format": result.get('input_format', 'enhanced_api_compatible'),
                 "success": result.get('success', True),
                 "input_validated": True,
-                "note": "Prediction from trained model using model_loader with input validation"
+                "note": "Prediction from trained model with performance metrics"
             }
         )
         
         logger.info(f"✅ Prediction successful: ${predicted_salary:,.2f} using {model_name}")
+        logger.info(f"📊 Model metrics: RMSE={model_metrics.get('RMSE', {}).get('value', 'N/A')}, R2={model_metrics.get('R2', {}).get('value', 'N/A')}")
         return response
         
     except HTTPException:

@@ -133,18 +133,19 @@ class ModelLoader:
                 # Use the enhanced API method
                 predicted_salary = model.predict_api_input(input_data)
                 
-                # Get additional info if available
-                extra_info = {}
-                if hasattr(model, 'get_model_metrics'):
-                    extra_info['model_metrics'] = model.get_model_metrics()
+                # Get model metrics in proper dictionary format
+                model_metrics = {}
+                if hasattr(model, 'get_api_info'):
+                    api_info = model.get_api_info()
+                    model_metrics = api_info.get('model_metrics', {})
                 
                 return {
                     "predicted_salary": predicted_salary,
                     "model_used": model_name,
                     "model_type": model.__class__.__name__,
+                    "model_metrics": model_metrics,  # Now properly formatted
                     "input_format": "enhanced_api_compatible",
-                    "success": True,
-                    **extra_info
+                    "success": True
                 }
             else:
                 logger.warning(f"Broken method.")
@@ -173,34 +174,3 @@ def reload_models():
         _model_loader.load_all_models()
     return get_model_loader()
 
-
-# Example usage / testing
-if __name__ == "__main__":
-    # Test the model loader
-    loader = ModelLoader()
-    loader.load_all_models()
-    
-    print(f"Available models: {loader.get_available_models()}")
-    print(f"Model info: {loader.get_model_info()}")
-    
-    # Test prediction if models are available
-    available = loader.get_available_models()
-    if available:
-        test_input = {
-            'age': 30,
-            'gender': 'Male',
-            'education_level': "Bachelor's",
-            'years_of_experience': 5,
-            'seniority': 'Mid',
-            'area': 'Engineering',
-            'role': 'Engineer'
-        }
-        
-        try:
-            result = loader.predict(available[0], test_input)
-            print(f"Test prediction: {result}")
-        except Exception as e:
-            print(f"Test prediction failed: {e}")
-    else:
-        print("No models available for testing")
-        print("Train and save a model using the enhanced base class!")

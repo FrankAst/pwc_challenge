@@ -209,13 +209,27 @@ class APIwrapper:
         Returns:
             Dictionary with model information for API
         """
+        # Convert DataFrame metrics to dictionary format for API
+        metrics_dict = {}
+        if hasattr(self, 'model_metrics_') and not self.model_metrics_.empty:
+            # Convert DataFrame to a more API-friendly format
+            for _, row in self.model_metrics_.iterrows():
+                metric_name = row['metric']
+                point_estimate = row['point_estimate']
+                ci_columns = [col for col in row.index if 'CI' in col or 'ci' in col]
+                
+                metrics_dict[metric_name] = {
+                    'value': float(point_estimate),
+                    'confidence_interval': row[ci_columns[0]] if ci_columns else None
+                }
+        
         info = {
             'model_class': self.__class__.__name__,
             'is_fitted': getattr(self, 'is_fitted', False),
             'feature_names': self.feature_names_,
             'feature_count': len(self.feature_names_) if self.feature_names_ else 0,
             'target_name': self.target_name_,
-            'model_metrics': self.model_metrics_,  # Updated reference
+            'model_metrics': metrics_dict,  # Now a proper dictionary instead of DataFrame
             'model_params': getattr(self, 'model_params', {}),
             'created_at': self.created_at_,
             'supports_predict': hasattr(self, 'predict'),
