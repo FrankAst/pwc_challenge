@@ -55,7 +55,7 @@ except ImportError:
 
 # Import utilities
 try:
-    from .utils import ExperimentTracker
+    from .utils import *
 except ImportError:
     pass
 
@@ -80,8 +80,7 @@ __all__ = [
     "LinearModel",
     "RandomForest"
     
-    # Utils
-    "ExperimentTracker"
+    
 ]
 
 # Clean up namespace - remove items that failed to import

@@ -393,7 +393,7 @@ class LinearModel(BaseModel):
         
         return None
 
-    def explain_prediction(self, X):
+    def explain_prediction(self, X, prediction_value=None):
         """Generate SHAP explanation for predictions."""
         if not self.is_fitted:
             raise ValueError("Model must be fitted before generating explanations")
@@ -412,15 +412,19 @@ class LinearModel(BaseModel):
         # Get meaningful feature names
         feature_names = self._get_final_feature_names()
         
-        return self._generate_shap_plot(X_transformed, X, feature_names)
+        return self._generate_shap_plot(X_transformed, X, feature_names, prediction_value)
     
-    def _generate_shap_plot(self, X_transformed, X_original, feature_names=None):
+    def _generate_shap_plot(self, X_transformed, X_original, feature_names=None, prediction_value=None):
         # Use the transformed data for SHAP calculation (same shape as background_data)
         shap_values = self._shap_explainer(X_transformed)
         
-        # ⚠️ CRITICAL FIX: Use transformed data for prediction to match SHAP calculation
-        # This ensures the prediction matches the same data space as SHAP values
-        model_prediction = self.model.predict(X_transformed)[0]
+        # Use provided prediction value or calculate it if not provided
+        if prediction_value is not None:
+            model_prediction = prediction_value
+        else:
+            # ⚠️ CRITICAL FIX: Use transformed data for prediction to match SHAP calculation
+            # This ensures the prediction matches the same data space as SHAP values
+            model_prediction = self.model.predict(X_transformed)[0]
         
         # Validate SHAP math: base_value + sum(shap_values) should ≈ prediction
         shap_sum = sum(shap_values.values[0])
@@ -458,7 +462,7 @@ class LinearModel(BaseModel):
         plt.close()
         
         return {
-            "prediction": model_prediction,  # ← Now uses consistent transformed data
+            "prediction": model_prediction,  # ← Now uses consistent prediction value
             "shap_plot": f"data:image/png;base64,{img_base64}",
             "shap_values": shap_values.values[0].tolist(),
             "base_value": float(shap_values.base_values[0]),

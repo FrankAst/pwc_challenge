@@ -188,10 +188,8 @@ def extract_job_title_info(row):
 
     CRITICAL VALIDATION RULES:
     - The job title MUST be a realistic, professional job position that exists in the real world
-    - If the job title is fake, exaggerated, nonsensical, or contains inappropriate content, return null for ALL fields
     - Do NOT extract from obviously fake titles like "CEO of World", "King of Universe", "Supreme Leader", etc.
     - Do NOT extract from titles with excessive punctuation, all caps, or unprofessional language
-    - Do NOT extract from gibberish, random characters, or made-up words
     - Do NOT extract from titles that are clear references to FANTASY characters.
     
     EXAMPLES OF INVALID JOB TITLES (return null for all fields):
@@ -200,26 +198,16 @@ def extract_job_title_info(row):
     - "King of Universe"
     - "Supreme Leader"
     - "Data Wizard"
-    - "Superhero"
-    - "Master of Everything"
-    - "God of Code"
-    - "Emperor of Sales"
-    - "Ninja Developer"
-    - "Rock Star Engineer"
-    - "Unicorn Designer"
-    - "asdfghjkl"
-    - "123456"
-    - "!!!MANAGER!!!"
-    - "CEO OF EVERYTHING"
     
     EXAMPLES OF VALID JOB TITLES:
-    - "CEO" (real executive role)
+    - "CEO"
     - "Data Engineer"
     - "Software Developer" 
     - "Marketing Manager"
     - "Product Manager"
     - "Senior Consultant"
     - "Director of Sales"
+    - "VP of Marketing"
     - "Chief Technology Officer"
 
     EXTRACTION RULES (only if job title is valid):
@@ -227,7 +215,9 @@ def extract_job_title_info(row):
     - Only extract information that is explicitly stated
     
     SENIORITY RULES:
-    - If the job title contains a seniority level (e.g., "Senior", "Junior", "Lead", "Principal", etc), extract it
+    - If the job title contains a seniority level (e.g., "Senior", "Junior", "Principal", etc), extract it
+    - If the job title contains a C-level position (e.g., "CEO", "CFO", "CTO", etc), classify it as "C-level"
+    - If the job title contains a Director or VP level, classify it as "C-level
     - If no seniority level is present, return "rule_based" (I will handle this programmatically)
         
     AREA RULES:
@@ -237,11 +227,13 @@ def extract_job_title_info(row):
     - Data analysts and data scientists should be grouped under "Data Science"
     
     Example outputs:
+    - "VP of Marketing" -> {{"seniority": "C-level", "area": "Marketing", "role": "VP"}}
     - "CEO" -> {{"seniority": "C-level", "area": "Executive", "role": "CEO"}}
     - "Recruiter" -> {{"seniority": "rule_based", "area": "Human Resources", "role": "Recruiter"}}
     - "Senior Consultant" -> {{"seniority": "Senior", "area": "Consulting", "role": "Consultant"}}
     - "Data Scientist" -> {{"seniority": "rule_based", "area": "Data Science", "role": "Scientist"}}
     - "Software Engineer" -> {{"seniority": "rule_based", "area": "Software/IT", "role": "Engineer"}}
+    - "Director of Sales" -> {{"seniority": "C-level", "area": "Sales", "role": "Director"}}
     - "jajasjkdkasdjkaj" -> {{"seniority": null, "area": null, "role": null}}
 
     JSON:"""

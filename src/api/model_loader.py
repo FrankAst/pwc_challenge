@@ -153,7 +153,8 @@ class ModelLoader:
                     
                     # Call the model's explain_prediction method
                     if hasattr(model, 'explain_prediction'):
-                        explanation_result = model.explain_prediction(input_df)
+                        # Pass the already calculated prediction to prevent double calculation
+                        explanation_result = model.explain_prediction(input_df, prediction_value=predicted_salary)
                         
                         # Structure the SHAP explanation data
                         shap_explanation = {

@@ -73,6 +73,8 @@ class DecisionTree(BaseModel):
             **default_params
         })
         
+    
+    
     def _get_column_types(self, X):
         """
         Identify column types for preprocessing.
@@ -329,7 +331,7 @@ class DecisionTree(BaseModel):
 
 ######################################## SHAP explanation methods ########################################
 
-    def explain_prediction(self, X):
+    def explain_prediction(self, X, prediction_value=None):
         """Generate SHAP explanation for predictions."""
         if not self.is_fitted:
             raise ValueError("Model must be fitted before generating explanations")
@@ -342,7 +344,7 @@ class DecisionTree(BaseModel):
         
         # Transform input data through the same preprocessing pipeline
         X_transformed = self._preprocess_for_prediction(X)
-        return self._generate_shap_plot(X_transformed, X)
+        return self._generate_shap_plot(X_transformed, X, prediction_value)
     
     def _preprocess_for_prediction(self, X):
         """
@@ -356,7 +358,7 @@ class DecisionTree(BaseModel):
         """
         return self.preprocessor.transform(X)
     
-    def _generate_shap_plot(self, X_transformed, X_original):
+    def _generate_shap_plot(self, X_transformed, X_original, prediction_value=None):
         # Use the transformed data for SHAP calculation (same shape as training data)
         shap_values = self._shap_explainer(X_transformed)
         
@@ -385,8 +387,14 @@ class DecisionTree(BaseModel):
         img_base64 = base64.b64encode(buffer.getvalue()).decode()
         plt.close()
         
+        # Use provided prediction value or calculate it if not provided
+        if prediction_value is not None:
+            final_prediction = prediction_value
+        else:
+            final_prediction = self.predict(X_original)[0]
+        
         return {
-            "prediction": self.predict(X_original)[0],
+            "prediction": final_prediction,
             "shap_plot": f"data:image/png;base64,{img_base64}",
             "shap_values": shap_values.values[0].tolist(),
             "base_value": float(shap_values.base_values[0]),

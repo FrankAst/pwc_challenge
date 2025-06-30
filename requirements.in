@@ -1,0 +1,24 @@
+# Core dependencies (unpinned for flexibility)
+pandas
+scikit-learn
+matplotlib
+spacy
+openai
+python-dotenv
+ipykernel
+
+# API and web framework
+fastapi
+uvicorn
+
+# Model explainability and optimization
+shap
+optuna
+
+# Statistics and additional ML tools
+statsmodels
+
+# Optional: You can specify minimum versions if needed
+# pandas>=2.0.0
+# scikit-learn>=1.0.0
+# fastapi>=0.100.0

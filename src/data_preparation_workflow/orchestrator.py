@@ -21,7 +21,7 @@ except ImportError:
     # Fall back to absolute imports (when running directly)
     from load_and_merge import *
     from FE_text import *
-    from utils import remove_nulls
+    from utils import remove_nulls, adjust_salary
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -83,6 +83,10 @@ def main():
         logger.info("Removing rows with null values...\n")
         df = remove_nulls(df)
         logger.info(f"Shape after removing nulls: {df.shape} \n")
+        
+        # Adjust salary values
+        logger.info("Adjusting salary values...\n")
+        df = adjust_salary(df)
         
         # Drop unnecessary columns
         logger.info("Dropping unnecessary columns: id, Job title and Description...\n")
