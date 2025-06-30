@@ -64,6 +64,12 @@ pip install -r requirements.txt
 - OpenAI (Text processing - requires API key)
 - Pandas, NumPy, Matplotlib
 
+After all dependencies have been installed, do:
+
+```bash
+python -m spacy download en_core_web_sm
+```
+
 ### 3. Environment Variables
 
 Create a `.env` file in the root directory:
@@ -71,6 +77,7 @@ Create a `.env` file in the root directory:
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
+> **Note**: Even if you don't have an API, still create the .env with a random string. The above 'your_openai_api_key_here' works.
 > **Note**: The OpenAI API is used for extracting job information from titles. If you don't have an API key, the system will use fallback logic.
 
 ### 4. Run the API
