@@ -128,9 +128,7 @@ class ModelLoader:
         model_info = self.get_model_info(model_name)
         
         try:
-            # Check if model has API compatibility (enhanced model)
             if hasattr(model, 'predict_api_input') and model_info.get('supports_api', False):
-                # Use the enhanced API method
                 predicted_salary = model.predict_api_input(input_data)
                 
                 # Get model metrics in proper dictionary format
@@ -147,27 +145,46 @@ class ModelLoader:
                 try:
                     logger.info(f"🔍 Generating SHAP explanation for {model_name}...")
                     
-                    # Convert input_data to DataFrame format for explain_prediction
-                    import pandas as pd
-                    input_df = pd.DataFrame([input_data])
-                    
-                    # Call the model's explain_prediction method
-                    if hasattr(model, 'explain_prediction'):
-                        # Pass the already calculated prediction to prevent double calculation
-                        explanation_result = model.explain_prediction(input_df, prediction_value=predicted_salary)
+                    # FIXED: Use the same preprocessing as predict_api_input()
+                    # Convert input using the same method, then call explain_prediction
+                    if hasattr(model, '_convert_api_input_to_dataframe'):
+                        # Use the exact same conversion as predict_api_input
+                        input_df = model._convert_api_input_to_dataframe(input_data)
                         
-                        # Structure the SHAP explanation data
-                        shap_explanation = {
-                            "shap_plot": explanation_result.get('shap_plot'),  # Base64 image
-                            "shap_values": explanation_result.get('shap_values', []),
-                            "base_value": explanation_result.get('base_value'),
-                            "feature_names": explanation_result.get('feature_names', []),
-                            "prediction": explanation_result.get('prediction')
-                        }
-                        explanation_available = True
-                        logger.info(f"✅ SHAP explanation generated successfully for {model_name}")
+                        # Call explain_prediction with preprocessed data and model prediction
+                        if hasattr(model, 'explain_prediction'):
+                            explanation_result = model.explain_prediction(input_df, model_prediction=predicted_salary)
+                            
+                            # Validate SHAP explanation consistency with model prediction
+                            shap_prediction = explanation_result.get('prediction')
+                            if shap_prediction is not None:
+                                difference = abs(float(shap_prediction) - predicted_salary)
+                                if difference > 0.01:  # Allow small numerical differences
+                                    logger.warning(f"⚠️ SHAP-model discrepancy detected: ${difference:,.2f}")
+                                    logger.warning(f"Model: ${predicted_salary:,.2f}, SHAP: ${shap_prediction:,.2f}")
+                                    explanation_error = f"SHAP explanation inconsistent with model prediction (diff: ${difference:,.2f})"
+                                else:
+                                    logger.info(f"✅ SHAP explanation validated: consistent with model prediction")
+                            
+                            # Structure the SHAP explanation data
+                            shap_explanation = {
+                                "shap_plot": explanation_result.get('shap_plot'),
+                                "shap_values": explanation_result.get('shap_values', []),
+                                "base_value": explanation_result.get('base_value'),
+                                "feature_names": explanation_result.get('feature_names', []),
+                                "prediction": explanation_result.get('prediction'),
+                                "model_prediction": predicted_salary,  # Show both for validation
+                                "difference": explanation_result.get('difference', 0.0),
+                                "validation_passed": explanation_result.get('validation_passed', None),
+                                "validation_info": explanation_result.get('validation_info', None)
+                            }
+                            explanation_available = True
+                            logger.info(f"✅ SHAP explanation generated successfully for {model_name}")
+                        else:
+                            explanation_error = f"Model {model_name} does not support SHAP explanations"
+                            logger.warning(f"⚠️ {explanation_error}")
                     else:
-                        explanation_error = f"Model {model_name} does not support SHAP explanations"
+                        explanation_error = f"Model {model_name} does not support API input conversion"
                         logger.warning(f"⚠️ {explanation_error}")
                         
                 except Exception as e:
@@ -175,10 +192,10 @@ class ModelLoader:
                     logger.error(f"❌ SHAP explanation failed for {model_name}: {e}")
                 
                 return {
-                    "predicted_salary": predicted_salary,
+                    "predicted_salary": predicted_salary,  # Always use model prediction as authoritative
                     "model_used": model_name,
                     "model_type": model.__class__.__name__,
-                    "model_metrics": model_metrics,  # Now properly formatted
+                    "model_metrics": model_metrics,
                     "input_format": "enhanced_api_compatible",
                     "success": True,
                     # SHAP explanation fields

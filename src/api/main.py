@@ -58,6 +58,11 @@ class PredictionInput(BaseModel):
     seniority: str = Field(..., description="Seniority level")
     job_title: str = Field(..., description="Job title to extract area and role from")
     
+    # Optional fields for manual mode (when user doesn't have OpenAI API key)
+    manual_mode: Optional[bool] = Field(False, description="Whether to use manual area/role instead of extraction")
+    manual_area: Optional[str] = Field(None, description="Manually selected job area")
+    manual_role: Optional[str] = Field(None, description="Manually selected job role")
+    
     class Config:
         json_schema_extra = {
             "example": {
@@ -257,25 +262,47 @@ def predict_with_model(model_name: str, input_data: PredictionInput):
                 detail=f"Model '{model_name}' not found. Available models: {available_models}"
             )
         
-        # Extract area and role from job title
-        row_data = {
-            'Job Title': input_data.job_title,
-            'Years of Experience': input_data.years_of_experience
-        }
-        row_series = pd.Series(row_data)
-        extracted_row = extract_job_title_info(row_series)
-        
-        # Check if job title validation failed
-        if '_validation_error' in extracted_row:
-            error_message = extracted_row['_validation_error']
-            logger.warning(f"❌ Job title validation failed: {error_message}")
-            raise HTTPException(status_code=400, detail=f"Invalid job title: Please enter a real job title (e.g., 'Data Engineer', 'Product Manager', 'Software Developer')")
-        
-        # Get extracted and standardized values
-        raw_area = extracted_row.get('Area', 'Other')
-        raw_role = extracted_row.get('Role', 'Other')
-        standardized_area = aggregate_categories(raw_area, 'area')
-        standardized_role = aggregate_categories(raw_role, 'role')
+        # Handle manual mode vs API extraction mode
+        if input_data.manual_mode and input_data.manual_area and input_data.manual_role:
+            # Manual mode: use provided area and role directly
+            logger.info(f"🔧 Manual mode: Using provided area='{input_data.manual_area}', role='{input_data.manual_role}'")
+            
+            # Use manual selections directly (they're already standardized from the dropdown)
+            standardized_area = input_data.manual_area
+            standardized_role = input_data.manual_role
+            raw_area = input_data.manual_area  # For display purposes
+            raw_role = input_data.manual_role
+            
+            # Set default text features for manual mode
+            extracted_row = {
+                'noun_count': 0,
+                'verb_count': 0, 
+                'adj_count': 0,
+                'adv_count': 0
+            }
+            
+        else:
+            # API mode: extract area and role from job title using OpenAI
+            logger.info(f"🤖 API mode: Extracting from job title '{input_data.job_title}'")
+            
+            row_data = {
+                'Job Title': input_data.job_title,
+                'Years of Experience': input_data.years_of_experience
+            }
+            row_series = pd.Series(row_data)
+            extracted_row = extract_job_title_info(row_series)
+            
+            # Check if job title validation failed
+            if '_validation_error' in extracted_row:
+                error_message = extracted_row['_validation_error']
+                logger.warning(f"❌ Job title validation failed: {error_message}")
+                raise HTTPException(status_code=400, detail=f"Invalid job title: Please enter a real job title (e.g., 'Data Engineer', 'Product Manager', 'Software Developer')")
+            
+            # Get extracted and standardized values
+            raw_area = extracted_row.get('Area', 'Other')
+            raw_role = extracted_row.get('Role', 'Other')
+            standardized_area = aggregate_categories(raw_area, 'area')
+            standardized_role = aggregate_categories(raw_role, 'role')
         
         # Convert Pydantic input to dictionary and add extracted area/role
         # Use the exact column names that the models expect
@@ -336,6 +363,10 @@ def predict_with_model(model_name: str, input_data: PredictionInput):
             explanation_available=result.get('explanation_available', False),
             explanation_error=result.get('explanation_error')
         )
+        
+        # Remove shap_plot from API response if present
+        if response.shap_explanation and 'shap_plot' in response.shap_explanation:
+            response.shap_explanation['shap_plot'] = '[omitted]'
         
         logger.info(f"✅ Prediction successful: ${predicted_salary:,.2f} using {model_name}")
         logger.info(f"📊 Model metrics: RMSE={model_metrics.get('RMSE', {}).get('value', 'N/A')}, R2={model_metrics.get('R2', {}).get('value', 'N/A')}")

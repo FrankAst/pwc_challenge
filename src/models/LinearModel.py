@@ -393,7 +393,7 @@ class LinearModel(BaseModel):
         
         return None
 
-    def explain_prediction(self, X, prediction_value=None):
+    def explain_prediction(self, X, model_prediction=None):
         """Generate SHAP explanation for predictions."""
         if not self.is_fitted:
             raise ValueError("Model must be fitted before generating explanations")
@@ -409,24 +409,24 @@ class LinearModel(BaseModel):
         # Transform input data through the same preprocessing pipeline
         X_transformed = self._preprocess_for_prediction(X)
         
+        # CORRECTED: Get actual model prediction if not provided
+        if model_prediction is None:
+            model_prediction = self.model.predict(X_transformed)[0]
+        
         # Get meaningful feature names
         feature_names = self._get_final_feature_names()
         
-        return self._generate_shap_plot(X_transformed, X, feature_names, prediction_value)
+        return self._generate_shap_plot(X_transformed, X, feature_names, model_prediction)
     
-    def _generate_shap_plot(self, X_transformed, X_original, feature_names=None, prediction_value=None):
+    def _generate_shap_plot(self, X_transformed, X_original, feature_names=None, model_prediction=None):
         # Use the transformed data for SHAP calculation (same shape as background_data)
         shap_values = self._shap_explainer(X_transformed)
         
-        # Use provided prediction value or calculate it if not provided
-        if prediction_value is not None:
-            model_prediction = prediction_value
-        else:
-            # ⚠️ CRITICAL FIX: Use transformed data for prediction to match SHAP calculation
-            # This ensures the prediction matches the same data space as SHAP values
+        # CORRECTED: Always use the provided model prediction as authoritative
+        if model_prediction is None:
             model_prediction = self.model.predict(X_transformed)[0]
         
-        # Validate SHAP math: base_value + sum(shap_values) should ≈ prediction
+        # Calculate SHAP sum for validation purposes
         shap_sum = sum(shap_values.values[0])
         expected_prediction = float(shap_values.base_values[0]) + shap_sum
         prediction_diff = abs(expected_prediction - model_prediction)
@@ -461,10 +461,17 @@ class LinearModel(BaseModel):
         img_base64 = base64.b64encode(buffer.getvalue()).decode()
         plt.close()
         
+        # CORRECTED: Return model prediction, not SHAP-calculated value
+        # Calculate SHAP sum for validation purposes  
+        difference = abs(expected_prediction - model_prediction)
+        
         return {
-            "prediction": model_prediction,  # ← Now uses consistent prediction value
+            "prediction": float(model_prediction),  # CORRECTED: Use actual model prediction
             "shap_plot": f"data:image/png;base64,{img_base64}",
             "shap_values": shap_values.values[0].tolist(),
             "base_value": float(shap_values.base_values[0]),
-            "feature_names": feature_names.tolist() if feature_names is not None else None
+            "feature_names": feature_names.tolist() if feature_names is not None else None,
+            "shap_sum": float(expected_prediction),  # For validation
+            "difference": float(difference),  # For debugging
+            "validation_info": f"SHAP sum: {expected_prediction:.2f}, Model: {model_prediction:.2f}, Diff: {difference:.2f}"
         }

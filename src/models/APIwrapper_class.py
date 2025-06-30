@@ -139,25 +139,35 @@ class APIwrapper:
         Returns:
             DataFrame ready for model prediction
         """
-        # Standard API to model column mapping
-        column_mapping = {
-            'age': 'Age',
-            'gender': 'Gender',
-            'education_level': 'Education Level',
-            'years_of_experience': 'Years of Experience',
-            'seniority': 'Seniority',
-            'area': 'Area',
-            'role': 'Role'
-        }
-        
-        # Convert API input to model format
-        model_data = {}
-        for api_key, value in input_dict.items():
-            model_key = column_mapping.get(api_key, api_key)
-            model_data[model_key] = value
+        # Handle both API format (lowercase) and internal format (proper case)
+        # The API sometimes sends proper case column names directly
+        if any(key in input_dict for key in ['Age', 'Gender', 'Education Level', 'Years of Experience', 'Seniority', 'Area', 'Role']):
+            # Direct format - already has proper column names
+            model_data = input_dict.copy()
+        else:
+            # API format - needs conversion
+            column_mapping = {
+                'age': 'Age',
+                'gender': 'Gender',
+                'education_level': 'Education Level',
+                'years_of_experience': 'Years of Experience',
+                'seniority': 'Seniority',
+                'area': 'Area',
+                'role': 'Role'
+            }
+            
+            # Convert API input to model format
+            model_data = {}
+            for api_key, value in input_dict.items():
+                model_key = column_mapping.get(api_key, api_key)
+                model_data[model_key] = value
         
         # Create DataFrame
         df = pd.DataFrame([model_data])
+        
+        # Add logging for debugging
+        print("[DEBUG] _convert_api_input_to_dataframe: Columns:", df.columns.tolist())
+        print("[DEBUG] _convert_api_input_to_dataframe: Values:\n", df.to_dict(orient='records'))
         
         # If we have stored feature names, ensure all are present
         if self.feature_names_:

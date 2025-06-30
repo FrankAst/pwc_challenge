@@ -158,6 +158,8 @@ class DecisionTree(BaseModel):
             if hasattr(self.preprocessor, 'get_feature_names_out')
             else [f"feature_{i}" for i in range(X_processed.shape[1])]
         )
+        # Store original input columns for robust prediction preprocessing
+        self.input_feature_columns = X.columns.tolist()
 
     def _predict_model(self, X):
         """Make predictions with same preprocessing pipeline."""
@@ -331,7 +333,7 @@ class DecisionTree(BaseModel):
 
 ######################################## SHAP explanation methods ########################################
 
-    def explain_prediction(self, X, prediction_value=None):
+    def explain_prediction(self, X, model_prediction=None):
         """Generate SHAP explanation for predictions."""
         if not self.is_fitted:
             raise ValueError("Model must be fitted before generating explanations")
@@ -342,9 +344,14 @@ class DecisionTree(BaseModel):
             import shap
             self._shap_explainer = shap.TreeExplainer(self.model)
         
-        # Transform input data through the same preprocessing pipeline
+        # CORRECTED: Simplified preprocessing - use consistent pipeline
         X_transformed = self._preprocess_for_prediction(X)
-        return self._generate_shap_plot(X_transformed, X, prediction_value)
+        
+        # CORRECTED: Get actual model prediction if not provided
+        if model_prediction is None:
+            model_prediction = self.model.predict(X_transformed)[0]
+        
+        return self._generate_shap_plot(X_transformed, X, model_prediction)
     
     def _preprocess_for_prediction(self, X):
         """
@@ -356,9 +363,20 @@ class DecisionTree(BaseModel):
         Returns:
             X_transformed: Preprocessed data ready for model prediction
         """
-        return self.preprocessor.transform(X)
+        # Ensure columns match original training columns (robust to missing/extra columns)
+        if hasattr(self, 'input_feature_columns') and self.input_feature_columns is not None:
+            X = X.reindex(columns=self.input_feature_columns, fill_value=0)
+        X_transformed = self.preprocessor.transform(X)
+        # Add logging for debugging
+        import pandas as pd
+        if isinstance(X, pd.DataFrame):
+            print("[DEBUG] _preprocess_for_prediction: Input columns:", X.columns.tolist())
+            print("[DEBUG] _preprocess_for_prediction: Input values:\n", X.to_dict(orient='records'))
+        if hasattr(X_transformed, 'shape'):
+            print("[DEBUG] _preprocess_for_prediction: Output shape:", X_transformed.shape)
+        return X_transformed
     
-    def _generate_shap_plot(self, X_transformed, X_original, prediction_value=None):
+    def _generate_shap_plot(self, X_transformed, X_original, model_prediction):
         # Use the transformed data for SHAP calculation (same shape as training data)
         shap_values = self._shap_explainer(X_transformed)
         
@@ -387,17 +405,19 @@ class DecisionTree(BaseModel):
         img_base64 = base64.b64encode(buffer.getvalue()).decode()
         plt.close()
         
-        # Use provided prediction value or calculate it if not provided
-        if prediction_value is not None:
-            final_prediction = prediction_value
-        else:
-            final_prediction = self.predict(X_original)[0]
+        # CORRECTED: Return model prediction, not SHAP-calculated value
+        # Calculate SHAP sum for validation purposes
+        shap_sum = float(shap_values.base_values[0]) + sum(shap_values.values[0])
+        difference = abs(shap_sum - model_prediction)
         
         return {
-            "prediction": final_prediction,
+            "prediction": float(model_prediction),  # CORRECTED: Use actual model prediction
             "shap_plot": f"data:image/png;base64,{img_base64}",
             "shap_values": shap_values.values[0].tolist(),
             "base_value": float(shap_values.base_values[0]),
-            "feature_names": feature_names.tolist() if feature_names is not None else None
+            "feature_names": feature_names.tolist() if feature_names is not None else None,
+            "shap_sum": float(shap_sum),  # For validation
+            "difference": float(difference),  # For debugging
+            "validation_info": f"SHAP sum: {shap_sum:.2f}, Model: {model_prediction:.2f}, Diff: {difference:.2f}"
         }
 

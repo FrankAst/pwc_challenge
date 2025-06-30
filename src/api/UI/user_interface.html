@@ -399,6 +399,18 @@
             <!-- Prediction Form Card -->
             <div class="card">
                 <h2>🔮 Make Prediction</h2>
+                
+                <!-- API Key Availability Checkbox - Better placement -->
+                <div style="background: #f7fafc; border-radius: 8px; padding: 12px; margin-bottom: 20px; border-left: 4px solid #667eea;">
+                    <label style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; cursor: pointer; margin: 0;">
+                        <input type="checkbox" id="noApiKey" style="transform: scale(1.2); accent-color: #667eea;">
+                        <span style="color: #4a5568; font-weight: 500;">🔧 I don't have an OpenAI API key</span>
+                    </label>
+                    <p style="margin: 8px 0 0 32px; font-size: 0.8rem; color: #718096; line-height: 1.4;">
+                        Check this box if you want to manually select job area and role instead of using AI to extract them from a job title.
+                    </p>
+                </div>
+                
                 <form id="predictionForm">
                     <div class="input-grid">
                         <div class="form-group">
@@ -447,10 +459,45 @@
                             <div class="error-message" id="seniorityError"></div>
                         </div>
                         
-                        <div class="form-group">
+                        <!-- Job Title Input (default) -->
+                        <div class="form-group" id="jobTitleGroup">
                             <label for="jobTitle">Job Title:</label>
-                            <input type="text" id="jobTitle" name="job_title" placeholder="e.g. Data Engineer, Product Manager, Software Developer" required>
+                            <input type="text" id="jobTitle" name="job_title" placeholder="e.g. Data Engineer, Product Manager, Software Developer">
                             <div class="error-message" id="jobTitleError"></div>
+                        </div>
+                        
+                        <!-- Manual Area/Role Selection (hidden by default) -->
+                        <div class="form-group" id="areaGroup" style="display: none;">
+                            <label for="jobArea">Job Area:</label>
+                            <select id="jobArea" name="job_area">
+                                <option value="">Select Job Area</option>
+                                <option value="Software/data">Software/Data</option>
+                                <option value="Business">Business</option>
+                                <option value="Sales & Marketing">Sales & Marketing</option>
+                                <option value="Finance & Operations">Finance & Operations</option>
+                                <option value="Product & Design">Product & Design</option>
+                                <option value="People & Support">People & Support</option>
+                                <option value="Management">Management</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="error-message" id="jobAreaError"></div>
+                        </div>
+                        
+                        <div class="form-group" id="roleGroup" style="display: none;">
+                            <label for="jobRole">Job Role:</label>
+                            <select id="jobRole" name="job_role">
+                                <option value="">Select Job Role</option>
+                                <option value="TopExecs">Top Executives (CEO, CFO, CTO, etc.)</option>
+                                <option value="Leadership">Leadership (Director, Executive)</option>
+                                <option value="Management">Management (Manager, Product Manager)</option>
+                                <option value="Analysis">Analysis (Analyst, Data Scientist)</option>
+                                <option value="Engineer">Engineer (Developer, Architect)</option>
+                                <option value="Support">Support (Specialist, Coordinator)</option>
+                                <option value="Individual Contributor">Individual Contributor (Associate, Consultant)</option>
+                                <option value="Creative">Creative (Designer, Writer)</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="error-message" id="jobRoleError"></div>
                         </div>
                     </div>
                     
@@ -512,12 +559,18 @@
             const modelSelect = document.getElementById('modelSelect');
             const predictionForm = document.getElementById('predictionForm');
             const apiUrlInput = document.getElementById('apiUrl');
+            const noApiKeyCheckbox = document.getElementById('noApiKey');
             
             modelSelect.addEventListener('change', handleModelSelection);
             predictionForm.addEventListener('submit', handlePrediction);
             apiUrlInput.addEventListener('change', function() {
                 API_BASE = this.value;
                 checkApiConnection();
+            });
+            
+            // Toggle between job title input and manual area/role selection
+            noApiKeyCheckbox.addEventListener('change', function() {
+                toggleManualJobSelection(this.checked);
             });
         }
         
@@ -714,14 +767,63 @@
             
             // Prepare prediction data
             const formData = new FormData(event.target);
-            const predictionData = {
-                age: parseFloat(formData.get('age')),
-                gender: formData.get('gender'),
-                education_level: formData.get('education_level'),
-                years_of_experience: parseFloat(formData.get('years_of_experience')),
-                seniority: formData.get('seniority'),
-                job_title: formData.get('job_title')
-            };
+            const noApiKeyChecked = document.getElementById('noApiKey').checked;
+            
+            let predictionData;
+            
+            if (noApiKeyChecked) {
+                // Manual mode: use dropdown values and create a dummy job title
+                const jobArea = document.getElementById('jobArea').value;
+                const jobRole = document.getElementById('jobRole').value;
+                
+                // Create a descriptive job title from the selections for display purposes
+                const roleDisplayNames = {
+                    'TopExecs': 'Executive',
+                    'Leadership': 'Director', 
+                    'Management': 'Manager',
+                    'Analysis': 'Analyst',
+                    'Engineer': 'Engineer',
+                    'Support': 'Specialist',
+                    'Individual Contributor': 'Associate',
+                    'Creative': 'Designer',
+                    'Other': 'Professional'
+                };
+                
+                const areaDisplayNames = {
+                    'Software/data': 'Software',
+                    'Sales & Marketing': 'Marketing', 
+                    'Finance & Operations': 'Finance',
+                    'Product & Design': 'Product',
+                    'People & Support': 'HR'
+                };
+                
+                const displayRole = roleDisplayNames[jobRole] || jobRole;
+                const displayArea = areaDisplayNames[jobArea] || jobArea;
+                const syntheticJobTitle = `${displayArea} ${displayRole}`;
+                
+                predictionData = {
+                    age: parseFloat(formData.get('age')),
+                    gender: formData.get('gender'),
+                    education_level: formData.get('education_level'),
+                    years_of_experience: parseFloat(formData.get('years_of_experience')),
+                    seniority: formData.get('seniority'),
+                    job_title: syntheticJobTitle,
+                    // Add manual selections for potential backend handling
+                    manual_mode: true,
+                    manual_area: jobArea,
+                    manual_role: jobRole
+                };
+            } else {
+                // API mode: use job title as usual
+                predictionData = {
+                    age: parseFloat(formData.get('age')),
+                    gender: formData.get('gender'),
+                    education_level: formData.get('education_level'),
+                    years_of_experience: parseFloat(formData.get('years_of_experience')),
+                    seniority: formData.get('seniority'),
+                    job_title: formData.get('job_title')
+                };
+            }
             
             // Disable button and show loading
             const predictBtn = document.getElementById('predictBtn');
@@ -1055,6 +1157,7 @@
             
             const age = parseFloat(document.getElementById('age').value);
             const experience = parseFloat(document.getElementById('experience').value);
+            const noApiKeyChecked = document.getElementById('noApiKey').checked;
             
             // Age validation
             if (!age || age < 16 || age > 100) {
@@ -1075,7 +1178,7 @@
                 isValid = false;
             }
             
-            const requiredFields = ['gender', 'education', 'seniority', 'jobTitle'];
+            const requiredFields = ['gender', 'education', 'seniority'];
             requiredFields.forEach(field => {
                 const element = document.getElementById(field);
                 if (!element.value) {
@@ -1083,6 +1186,29 @@
                     isValid = false;
                 }
             });
+            
+            // Job-related validation based on mode
+            if (noApiKeyChecked) {
+                // Manual mode: require both area and role
+                const jobArea = document.getElementById('jobArea').value;
+                const jobRole = document.getElementById('jobRole').value;
+                
+                if (!jobArea) {
+                    showError('jobAreaError', 'Please select a job area');
+                    isValid = false;
+                }
+                if (!jobRole) {
+                    showError('jobRoleError', 'Please select a job role');
+                    isValid = false;
+                }
+            } else {
+                // API mode: require job title
+                const jobTitle = document.getElementById('jobTitle').value.trim();
+                if (!jobTitle) {
+                    showError('jobTitleError', 'Please enter a job title');
+                    isValid = false;
+                }
+            }
             
             return isValid;
         }
@@ -1108,6 +1234,66 @@
             errorElements.forEach(element => {
                 element.style.display = 'none';
             });
+        }
+        
+        // Toggle manual job selection fields based on API key checkbox
+        function toggleManualJobSelection(useManual) {
+            const jobTitleGroup = document.getElementById('jobTitleGroup');
+            const areaGroup = document.getElementById('areaGroup');
+            const roleGroup = document.getElementById('roleGroup');
+            const jobTitle = document.getElementById('jobTitle');
+            const jobArea = document.getElementById('jobArea');
+            const jobRole = document.getElementById('jobRole');
+            
+            if (useManual) {
+                // Hide job title input, show manual dropdowns
+                jobTitleGroup.style.display = 'none';
+                areaGroup.style.display = 'block';
+                roleGroup.style.display = 'block';
+                
+                // Clear job title and make dropdowns required
+                jobTitle.value = '';
+                jobTitle.removeAttribute('required');
+                jobArea.setAttribute('required', 'required');
+                jobRole.setAttribute('required', 'required');
+                
+                // Clear any job title errors
+                clearError('jobTitleError');
+            } else {
+                // Show job title input, hide manual dropdowns
+                jobTitleGroup.style.display = 'block';
+                areaGroup.style.display = 'none';
+                roleGroup.style.display = 'none';
+                
+                // Clear dropdowns and make job title required
+                jobArea.value = '';
+                jobRole.value = '';
+                jobArea.removeAttribute('required');
+                jobRole.removeAttribute('required');
+                jobTitle.setAttribute('required', 'required');
+                
+                // Clear any dropdown errors
+                clearError('jobAreaError');
+                clearError('jobRoleError');
+            }
+        }
+        
+        // Toggle prediction button enabled/disabled state
+        function togglePredictionButton() {
+            const predictBtn = document.getElementById('predictBtn');
+            const noApiKeyCheckbox = document.getElementById('noApiKey');
+            const jobTitleInput = document.getElementById('jobTitle');
+            const areaSelect = document.getElementById('jobArea');
+            const roleSelect = document.getElementById('jobRole');
+            
+            if (noApiKeyCheckbox.checked) {
+                // Enable if manual inputs are filled
+                const isEnabled = jobTitleInput.value.trim() !== '' && areaSelect.value !== '' && roleSelect.value !== '';
+                predictBtn.disabled = !isEnabled;
+            } else {
+                // Enable if a model is selected
+                predictBtn.disabled = !selectedModel;
+            }
         }
     </script>
 </body>
