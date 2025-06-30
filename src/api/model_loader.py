@@ -112,14 +112,14 @@ class ModelLoader:
     
     def predict(self, model_name: str, input_data: Dict) -> Dict:
         """
-        Make a prediction using a specific model.
+        Make a prediction using a specific model with automatic SHAP explanation.
         
         Args:
             model_name: Name of the model to use
             input_data: Dictionary with prediction inputs
             
         Returns:
-            Dictionary with prediction results
+            Dictionary with prediction results and SHAP explanation
         """
         model = self.get_model(model_name)
         if model is None:
@@ -139,13 +139,51 @@ class ModelLoader:
                     api_info = model.get_api_info()
                     model_metrics = api_info.get('model_metrics', {})
                 
+                # Generate SHAP explanation
+                shap_explanation = None
+                explanation_available = False
+                explanation_error = None
+                
+                try:
+                    logger.info(f"🔍 Generating SHAP explanation for {model_name}...")
+                    
+                    # Convert input_data to DataFrame format for explain_prediction
+                    import pandas as pd
+                    input_df = pd.DataFrame([input_data])
+                    
+                    # Call the model's explain_prediction method
+                    if hasattr(model, 'explain_prediction'):
+                        explanation_result = model.explain_prediction(input_df)
+                        
+                        # Structure the SHAP explanation data
+                        shap_explanation = {
+                            "shap_plot": explanation_result.get('shap_plot'),  # Base64 image
+                            "shap_values": explanation_result.get('shap_values', []),
+                            "base_value": explanation_result.get('base_value'),
+                            "feature_names": explanation_result.get('feature_names', []),
+                            "prediction": explanation_result.get('prediction')
+                        }
+                        explanation_available = True
+                        logger.info(f"✅ SHAP explanation generated successfully for {model_name}")
+                    else:
+                        explanation_error = f"Model {model_name} does not support SHAP explanations"
+                        logger.warning(f"⚠️ {explanation_error}")
+                        
+                except Exception as e:
+                    explanation_error = f"SHAP generation failed: {str(e)}"
+                    logger.error(f"❌ SHAP explanation failed for {model_name}: {e}")
+                
                 return {
                     "predicted_salary": predicted_salary,
                     "model_used": model_name,
                     "model_type": model.__class__.__name__,
                     "model_metrics": model_metrics,  # Now properly formatted
                     "input_format": "enhanced_api_compatible",
-                    "success": True
+                    "success": True,
+                    # SHAP explanation fields
+                    "shap_explanation": shap_explanation,
+                    "explanation_available": explanation_available,
+                    "explanation_error": explanation_error
                 }
             else:
                 logger.warning(f"Broken method.")

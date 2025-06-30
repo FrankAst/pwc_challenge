@@ -233,9 +233,7 @@ class BaseModel(ABC, APIwrapper):
         print("Available public methods:")
         for i, method in enumerate(methods, 1):
             print(f"  {i}. {method}()")
-        
-    
-    
+            
     def plot_predictions(self, X, y, dataset_name='Dataset', figsize=(8, 6)):
         """
         Plot predictions vs actual values.
@@ -279,3 +277,9 @@ class BaseModel(ABC, APIwrapper):
         plt.grid(True, alpha=0.3)
         plt.tight_layout()
         plt.show()
+
+    def explain_prediction(self, X):
+        """
+        SHAP based explanation of predictions. 
+        """
+        raise NotImplementedError("Implement in specific model classes")

@@ -192,7 +192,7 @@ def extract_job_title_info(row):
     - Do NOT extract from obviously fake titles like "CEO of World", "King of Universe", "Supreme Leader", etc.
     - Do NOT extract from titles with excessive punctuation, all caps, or unprofessional language
     - Do NOT extract from gibberish, random characters, or made-up words
-    - Do NOT extract from titles that are clear references to FANTASY characters. ()
+    - Do NOT extract from titles that are clear references to FANTASY characters.
     
     EXAMPLES OF INVALID JOB TITLES (return null for all fields):
     - "jajasjkdkasdjkaj" 

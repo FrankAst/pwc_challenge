@@ -223,18 +223,47 @@ class APIwrapper:
                     'confidence_interval': row[ci_columns[0]] if ci_columns else None
                 }
         
+        # Get the actual final feature count from model-specific attributes
+        # Priority: model-specific n_features_final > sklearn coef_ length > sklearn n_features_in_ > feature_names length
+        n_features_final = None
+        if hasattr(self, 'n_features_final') and self.n_features_final:
+            n_features_final = self.n_features_final
+        elif hasattr(self, 'model') and hasattr(self.model, 'coef_'):
+            # For linear models, use coefficient count
+            n_features_final = len(self.model.coef_)
+        elif hasattr(self, 'model') and hasattr(self.model, 'n_features_in_'):
+            # For sklearn models, use n_features_in_
+            n_features_final = self.model.n_features_in_
+        elif self.feature_names_:
+            # Fallback to feature names length
+            n_features_final = len(self.feature_names_)
+        else:
+            n_features_final = 0
+        
         info = {
             'model_class': self.__class__.__name__,
             'is_fitted': getattr(self, 'is_fitted', False),
             'feature_names': self.feature_names_,
-            'feature_count': len(self.feature_names_) if self.feature_names_ else 0,
+            'n_features_final': n_features_final,  # Single source of truth
             'target_name': self.target_name_,
-            'model_metrics': metrics_dict,  # Now a proper dictionary instead of DataFrame
+            'model_metrics': metrics_dict,
             'model_params': getattr(self, 'model_params', {}),
             'created_at': self.created_at_,
             'supports_predict': hasattr(self, 'predict'),
             'supports_api': True
         }
+        
+        # Add model-specific info from get_model_info if available (for additional details only)
+        if hasattr(self, 'get_model_info'):
+            try:
+                model_specific_info = self.get_model_info()
+                # Only add non-redundant information that doesn't override our main values
+                for key, value in model_specific_info.items():
+                    if key not in info and key.startswith(('n_features_after_', 'features_removed_')):
+                        info[key] = value
+            except Exception:
+                pass  # Ignore if get_model_info fails
+        
         info.update(self.model_info_)
         return info
     

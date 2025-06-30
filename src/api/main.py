@@ -71,11 +71,16 @@ class PredictionInput(BaseModel):
         }
 
 class PredictionOutput(BaseModel):
-    """Output model for salary predictions."""
+    """Output model for salary predictions with SHAP explanations."""
     predicted_salary: float = Field(..., description="Predicted salary in USD")
     model_used: str = Field(..., description="Name of the model used")
     timestamp: str = Field(..., description="Prediction timestamp")
     confidence_info: Optional[Dict[str, Any]] = Field(None, description="Additional model info")
+    
+    # SHAP explanation fields
+    shap_explanation: Optional[Dict[str, Any]] = Field(None, description="SHAP explanation data")
+    explanation_available: bool = Field(False, description="Whether SHAP explanation was generated")
+    explanation_error: Optional[str] = Field(None, description="Error message if SHAP generation failed")
 
 
 ############################################ API Setup ############################################
@@ -273,9 +278,21 @@ def predict_with_model(model_name: str, input_data: PredictionInput):
         standardized_role = aggregate_categories(raw_role, 'role')
         
         # Convert Pydantic input to dictionary and add extracted area/role
-        input_dict = input_data.dict()
-        input_dict['area'] = standardized_area
-        input_dict['role'] = standardized_role
+        # Use the exact column names that the models expect
+        input_dict = {
+            'Age': input_data.age,
+            'Gender': input_data.gender,
+            'Education Level': input_data.education_level,
+            'Years of Experience': input_data.years_of_experience,
+            'Seniority': input_data.seniority,
+            'Area': standardized_area,
+            'Role': standardized_role,
+            # Provide default values for text features since we only have job title, not full description
+            'noun_count': extracted_row.get('noun_count', 0),
+            'verb_count': extracted_row.get('verb_count', 0),
+            'adj_count': extracted_row.get('adj_count', 0),
+            'adv_count': extracted_row.get('adv_count', 0)
+        }
         
         logger.info(f"📝 Extracted: '{input_data.job_title}' → area: '{standardized_area}', role: '{standardized_role}'")
         
@@ -314,7 +331,10 @@ def predict_with_model(model_name: str, input_data: PredictionInput):
                 "success": result.get('success', True),
                 "input_validated": True,
                 "note": "Prediction from trained model with automatic job title extraction"
-            }
+            },
+            shap_explanation=result.get('shap_explanation'),  # Add SHAP explanation if available
+            explanation_available=result.get('explanation_available', False),
+            explanation_error=result.get('explanation_error')
         )
         
         logger.info(f"✅ Prediction successful: ${predicted_salary:,.2f} using {model_name}")

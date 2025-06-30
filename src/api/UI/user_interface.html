@@ -60,7 +60,7 @@
         
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 280px 1fr 400px;
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -72,6 +72,84 @@
             padding: 25px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        /* SHAP Explanation Panel */
+        .shap-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            display: none; /* Initially hidden */
+        }
+        
+        .shap-panel.visible {
+            display: block;
+        }
+        
+        .shap-panel h2 {
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .shap-info {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+            font-size: 0.9rem;
+        }
+        
+        .shap-info h4 {
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .shap-info p {
+            color: #718096;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        
+        .shap-values-summary {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .feature-impact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 0.8rem;
+        }
+        
+        .feature-name {
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .impact-value {
+            font-weight: 600;
+        }
+        
+        .impact-positive {
+            color: #38a169;
+        }
+        
+        .impact-negative {
+            color: #e53e3e;
         }
         
         .model-selector {
@@ -381,6 +459,24 @@
                     </button>
                 </form>
             </div>
+            
+            <!-- SHAP Explanation Panel -->
+            <div class="shap-panel" id="shapPanel">
+                <h2>🔍 SHAP Explanation</h2>
+                
+                <div class="shap-loading" id="shapLoading">
+                    Generating explanation...
+                </div>
+                
+                <div class="shap-error" id="shapError"></div>
+                
+                <div class="shap-info" id="shapInfo" style="display: none;">
+                    <h4>What are SHAP values?</h4>
+                    <p>SHAP values explain how each feature contributes to the prediction. Positive values increase the predicted salary, negative values decrease it.</p>
+                    
+                    <div class="shap-values-summary" id="shapValuesSummary"></div>
+                </div>
+            </div>
         </div>
         
         <!-- Results Card -->
@@ -538,12 +634,20 @@
             const modelDetails = document.getElementById('modelDetails');
             const modelMetrics = document.getElementById('modelMetrics');
             
-            // Model details
+            // Determine optimization type from model name
+            let optimizationType = "None";
+            const modelName = modelData.name || selectedModel;
+            if (modelName.includes('BOopt') || modelName.includes('BayesOpt')) {
+                optimizationType = "Bayesian Optimization";
+            } else if (modelName.includes('GSopt') || modelName.includes('GridSearch')) {
+                optimizationType = "Grid Search";
+            }
+            
+            // Model details - removed the Final Features line
             modelDetails.innerHTML = `
                 <p><strong>Type:</strong> ${modelData.type}</p>
                 <p><strong>Status:</strong> ${modelData.status}</p>
-                <p><strong>Features:</strong> ${modelData.feature_count}</p>
-                <p><strong>Created:</strong> ${modelData.created_at}</p>
+                <p><strong>Optimization:</strong> ${optimizationType}</p>
             `;
             
             // Model metrics - Fix the property name (remove underscore)
@@ -624,6 +728,9 @@
             predictBtn.disabled = true;
             predictBtn.textContent = '🔄 Predicting...';
             
+            // Show SHAP loading state
+            showShapLoading();
+            
             try {
                 const response = await fetch(`${API_BASE}/predict/${selectedModel}`, {
                     method: 'POST',
@@ -644,6 +751,7 @@
             } catch (error) {
                 console.error('Prediction error:', error);
                 displayPredictionError(error.message);
+                hideShapPanel(); // Hide SHAP panel on error
             } finally {
                 predictBtn.disabled = false;
                 predictBtn.textContent = '🎯 Predict Salary';
@@ -675,8 +783,257 @@
             resultDiv.className = 'prediction-result';
             resultDiv.style.display = 'block';
             
+            // Display SHAP explanation with user input data and extracted job info
+            displayShapExplanation(result, inputData);
+            
             // Scroll to result
             resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Display SHAP explanation
+        function displayShapExplanation(result, inputData) {
+            const shapPanel = document.getElementById('shapPanel');
+            const shapLoading = document.getElementById('shapLoading');
+            const shapError = document.getElementById('shapError');
+            const shapInfo = document.getElementById('shapInfo');
+            const shapValuesSummary = document.getElementById('shapValuesSummary');
+            
+            // Show SHAP panel
+            shapPanel.classList.add('visible');
+            
+            // Hide loading state
+            shapLoading.style.display = 'none';
+            
+            if (result.explanation_available && result.shap_explanation) {
+                // Hide error, show content
+                shapError.style.display = 'none';
+                shapInfo.style.display = 'block';
+                
+                // FIXED: Extract job info from the correct location in the API response
+                console.log('DEBUG: Full result.confidence_info:', result.confidence_info);
+                
+                const extractedJobInfo = result.confidence_info?.extracted_job_info ? {
+                    standardized_area: result.confidence_info.extracted_job_info.standardized_area,
+                    standardized_role: result.confidence_info.extracted_job_info.standardized_role
+                } : null;
+                
+                console.log('DEBUG: Final extractedJobInfo:', extractedJobInfo);
+                
+                // Display SHAP values summary with user input values and extracted job info
+                displayShapValuesSummary(result.shap_explanation, shapValuesSummary, inputData, extractedJobInfo);
+                
+            } else {
+                // Show error message
+                shapInfo.style.display = 'none';
+                shapError.style.display = 'block';
+                shapError.textContent = result.explanation_error || 'SHAP explanation not available for this model';
+            }
+        }
+        
+        // Display SHAP values summary
+        function displayShapValuesSummary(shapData, container, inputData, extractedJobInfo = null) {
+            if (!shapData.shap_values || !shapData.feature_names) {
+                container.innerHTML = '<p style="text-align: center; color: #718096;">No SHAP values available</p>';
+                return;
+            }
+            
+            // DEBUG: Log the raw SHAP data to identify the issue
+            console.log('DEBUG: Raw SHAP Data:', shapData);
+            console.log('DEBUG: Base value:', shapData.base_value);
+            console.log('DEBUG: Prediction:', shapData.prediction);
+            console.log('DEBUG: SHAP values:', shapData.shap_values);
+            console.log('DEBUG: Sum of SHAP values:', shapData.shap_values.reduce((sum, val) => sum + val, 0));
+            console.log('DEBUG: Expected total (base + shap):', (shapData.base_value || 0) + shapData.shap_values.reduce((sum, val) => sum + val, 0));
+            
+            // SHAP values validation
+            const totalShapSum = shapData.shap_values.reduce((sum, val) => sum + val, 0);
+            const expectedPrediction = (shapData.base_value || 0) + totalShapSum;
+            const actualPrediction = shapData.prediction || 0;
+            const predictionDiff = Math.abs(expectedPrediction - actualPrediction);
+            
+            // Create feature impact pairs with display names (no longer async!)
+            const featureImpacts = shapData.feature_names.map((name, index) => ({
+                name: name,
+                value: shapData.shap_values[index] || 0,
+                displayName: formatFeatureNameWithValue(name, inputData, extractedJobInfo)
+            }));
+            
+            // DEBUG: Log top features to see their values
+            console.log('DEBUG: Top 5 feature impacts:');
+            const sortedFeatures = [...featureImpacts].sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+            sortedFeatures.slice(0, 5).forEach((feature, i) => {
+                console.log(`  ${i+1}. ${feature.name}: ${feature.value}`);
+            });
+            
+            // Sort by absolute value
+            featureImpacts.sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+            
+            // Show top 8 most impactful features
+            const topFeatures = featureImpacts.slice(0, 8);
+            const hiddenFeatures = featureImpacts.slice(8);
+            const hiddenSum = hiddenFeatures.reduce((sum, feature) => sum + feature.value, 0);
+            const topSum = topFeatures.reduce((sum, feature) => sum + feature.value, 0);
+            
+            let summaryHtml = `
+                <div style="margin-bottom: 12px; padding: 8px; background: #f0f4f8; border-radius: 4px; font-size: 0.85rem;">
+                    <strong>Base prediction:</strong> ${formatCurrency(shapData.base_value || 0)}<br>
+                    <strong>Final prediction:</strong> ${formatCurrency(shapData.prediction || 0)}<br>
+                    <strong>SHAP sum:</strong> ${formatCurrency(totalShapSum)}<br>
+                    ${predictionDiff > 1 ? `<div style="color: #e53e3e; font-size: 0.8rem; margin-top: 4px;">⚠️ Validation: Base + SHAP sum = ${formatCurrency(expectedPrediction)} (diff: ${formatCurrency(predictionDiff)})</div>` : ''}
+                </div>
+                <div style="margin-bottom: 10px; font-weight: 600; color: #4a5568; font-size: 0.9rem;">
+                    Top feature impacts (showing ${topFeatures.length} of ${featureImpacts.length}):
+                </div>
+            `;
+            
+            topFeatures.forEach(feature => {
+                const isPositive = feature.value > 0;
+                const impactClass = isPositive ? 'impact-positive' : 'impact-negative';
+                const sign = isPositive ? '+' : '';
+                
+                summaryHtml += `
+                    <div class="feature-impact">
+                        <span class="feature-name">${feature.displayName}</span>
+                        <span class="impact-value ${impactClass}">
+                            ${sign}${formatCurrency(feature.value)}
+                        </span>
+                    </div>
+                `;
+            });
+            
+            // Add summary line for hidden features if any
+            if (hiddenFeatures.length > 0) {
+                const isPositive = hiddenSum > 0;
+                const impactClass = isPositive ? 'impact-positive' : 'impact-negative';
+                const sign = isPositive ? '+' : '';
+                
+                summaryHtml += `
+                    <div class="feature-impact" style="border-top: 1px solid #e2e8f0; margin-top: 6px; padding-top: 6px; font-style: italic;">
+                        <span class="feature-name">${hiddenFeatures.length} other features</span>
+                        <span class="impact-value ${impactClass}">
+                            ${sign}${formatCurrency(hiddenSum)}
+                        </span>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = summaryHtml;
+        }
+        
+        // Format feature names with actual user input values
+        function formatFeatureNameWithValue(featureName, inputData, extractedJobInfo = null) {
+            // Clean the feature name by removing preprocessing prefixes
+            let cleaned = featureName.replace(/^(num__|cat__|ord_)/, '');
+            
+            // Handle numerical features - show actual values
+            if (cleaned === 'Age') {
+                return `Age = ${inputData.age}`;
+            }
+            if (cleaned === 'Years of Experience' || cleaned === 'years_of_experience') {
+                return `Experience = ${inputData.years_of_experience} years`;
+            }
+            
+            // Handle text features (word counts) - MOVED UP to catch before categorical logic
+            if (cleaned.includes('_count')) {
+                const countType = cleaned.replace('_count', '').replace('_', ' ');
+                return `${countType.charAt(0).toUpperCase() + countType.slice(1)} word count`;
+            }
+            
+            // Handle ORDINAL encoded features (for Decision Tree models)
+            if (featureName.startsWith('ord_')) {
+                console.log(`DEBUG: Ordinal feature detected: ${featureName}, cleaned: ${cleaned}`);
+                
+                // Pattern: ord_FeatureName__FeatureName -> just show the actual value
+                if (cleaned.includes('Education Level')) {
+                    return `Education Level = ${inputData.education_level}`;
+                }
+                if (cleaned.includes('Seniority')) {
+                    return `Seniority = ${inputData.seniority}`;
+                }
+                
+                // For any other ordinal feature, just extract the base name
+                const parts = cleaned.split('__');
+                const baseName = parts[0] || cleaned.replace(/_/g, ' ');
+                return `${baseName} = [ordinal value]`;
+            }
+            
+            // Handle one-hot encoded categorical features
+            if (cleaned.includes('_') && !featureName.startsWith('ord_')) {
+                const parts = cleaned.split('_');
+                if (parts.length >= 2) {
+                    const baseFeature = parts[0];
+                    const encodedValue = parts.slice(1).join('_'); // Handle multi-word values
+                    
+                    // For gender encoding
+                    if (baseFeature === 'Gender') {
+                        const matches = encodedValue === inputData.gender;
+                        return `Gender ${matches ? '=' : '≠'} ${encodedValue}`;
+                    }
+                    
+                    // For education encoding  
+                    if (baseFeature.includes('Education Level')) {
+                        const matches = encodedValue === inputData.education_level;
+                        return `Education Level ${matches ? '=' : '≠'} ${encodedValue}`;
+                    }
+                    
+                    // For seniority encoding
+                    if (baseFeature === 'Seniority') {
+                        const matches = encodedValue === inputData.seniority;
+                        return `Seniority ${matches ? '=' : '≠'} ${encodedValue}`;
+                    }
+                    
+                    // For area and role (extracted from job title)
+                    if (baseFeature === 'Area') {
+                        const userArea = extractedJobInfo?.standardized_area || 'Unknown';
+                        const matches = userArea === encodedValue;
+                        return `Job Area ${matches ? '=' : '≠'} ${encodedValue}`;
+                    }
+                    if (baseFeature === 'Role') {
+                        const userRole = extractedJobInfo?.standardized_role || 'Unknown';
+                        const matches = userRole === encodedValue;
+                        return `Job Role ${matches ? '=' : '≠'} ${encodedValue}`;
+                    }
+                    
+                    // Default for other categorical features
+                    return `${baseFeature.replace('_', ' ')} ? ${encodedValue}`;
+                }
+            }
+            
+            // Default formatting - clean up underscores and capitalize
+            return cleaned
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase())
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+        
+        // Format currency values
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+        
+        // Show SHAP loading state
+        function showShapLoading() {
+            const shapPanel = document.getElementById('shapPanel');
+            const shapLoading = document.getElementById('shapLoading');
+            const shapError = document.getElementById('shapError');
+            const shapInfo = document.getElementById('shapInfo');
+            
+            shapPanel.classList.add('visible');
+            shapLoading.style.display = 'block';
+            shapError.style.display = 'none';
+            shapInfo.style.display = 'none';
+        }
+        
+        // Hide SHAP panel
+        function hideShapPanel() {
+            const shapPanel = document.getElementById('shapPanel');
+            shapPanel.classList.remove('visible');
         }
         
         // Display prediction error
@@ -696,15 +1053,25 @@
         function validateForm() {
             let isValid = true;
             
-            const age = document.getElementById('age').value;
+            const age = parseFloat(document.getElementById('age').value);
+            const experience = parseFloat(document.getElementById('experience').value);
+            
+            // Age validation
             if (!age || age < 16 || age > 100) {
                 showError('ageError', 'Age must be between 16 and 100');
                 isValid = false;
             }
             
-            const experience = document.getElementById('experience').value;
+            // Experience validation
             if (!experience || experience < 0 || experience > 50) {
                 showError('experienceError', 'Experience must be between 0 and 50 years');
+                isValid = false;
+            }
+            
+            // Age vs Experience validation - cannot have more experience than age-18
+            if (age && experience && experience > (age - 18)) {
+                const maxExperience = Math.max(0, age - 18);
+                showError('experienceError', `Experience cannot exceed ${maxExperience} years (Age - 18)`);
                 isValid = false;
             }
             

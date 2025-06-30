@@ -1,6 +1,13 @@
 from .base_class import BaseModel
 import pandas as pd
 import numpy as np
+
+# Shap imports
+import shap
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
+
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
@@ -43,7 +50,8 @@ class DecisionTree(BaseModel):
         self.categorical_cols = []
         self.ordinal_cols = list(self.ordinal_mappings.keys())
         
-        
+        # Shap explainer
+        self._shap_explainer = None
         
         
         # Set default parameters for decision tree
@@ -319,5 +327,69 @@ class DecisionTree(BaseModel):
         print(f"Updated parameters: {regressor_params}")
 
 
+######################################## SHAP explanation methods ########################################
 
+    def explain_prediction(self, X):
+        """Generate SHAP explanation for predictions."""
+        if not self.is_fitted:
+            raise ValueError("Model must be fitted before generating explanations")
+            
+        # Ensure SHAP explainer is initialized
+        if not hasattr(self, '_shap_explainer') or self._shap_explainer is None:
+            # TreeExplainer doesn't need background data, but needs the fitted model
+            import shap
+            self._shap_explainer = shap.TreeExplainer(self.model)
+        
+        # Transform input data through the same preprocessing pipeline
+        X_transformed = self._preprocess_for_prediction(X)
+        return self._generate_shap_plot(X_transformed, X)
+    
+    def _preprocess_for_prediction(self, X):
+        """
+        Transform input data through the same preprocessing pipeline used during training.
+        
+        Args:
+            X: Raw input data (DataFrame)
+            
+        Returns:
+            X_transformed: Preprocessed data ready for model prediction
+        """
+        return self.preprocessor.transform(X)
+    
+    def _generate_shap_plot(self, X_transformed, X_original):
+        # Use the transformed data for SHAP calculation (same shape as training data)
+        shap_values = self._shap_explainer(X_transformed)
+        
+        # Get meaningful feature names for the plot
+        feature_names = self.feature_names if self.feature_names is not None else None
+        
+        # If we have meaningful feature names, create a new Explanation object with them
+        if feature_names is not None and len(feature_names) == len(shap_values.values[0]):
+            # Create a new SHAP Explanation with meaningful feature names
+            shap_values_with_names = shap.Explanation(
+                values=shap_values.values,
+                base_values=shap_values.base_values,
+                data=shap_values.data,
+                feature_names=feature_names
+            )
+            # Generate waterfall plot with meaningful names
+            shap.plots.waterfall(shap_values_with_names[0], show=False)
+        else:
+            # Fallback to original plot
+            shap.plots.waterfall(shap_values[0], show=False)
+        
+        # Convert to base64
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight', dpi=150)
+        buffer.seek(0)
+        img_base64 = base64.b64encode(buffer.getvalue()).decode()
+        plt.close()
+        
+        return {
+            "prediction": self.predict(X_original)[0],
+            "shap_plot": f"data:image/png;base64,{img_base64}",
+            "shap_values": shap_values.values[0].tolist(),
+            "base_value": float(shap_values.base_values[0]),
+            "feature_names": feature_names.tolist() if feature_names is not None else None
+        }
 
